@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <div>
       Here's the app
-      <div>
+      {/* <div>
         <h>Logo</h>
         <h>thinkquiry.io</h>
       </div>
@@ -28,7 +28,7 @@ const Home = () => {
         <input placeholder='Create Password'></input>
         <button>Enter</button>
         <div></div>
-      </div>
+      </div> */}
     </div>
   );
 };
