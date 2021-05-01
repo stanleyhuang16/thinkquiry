@@ -1,9 +1,12 @@
+import styled from 'styled-components';
+
 function TeacherQuestionContainer(props) {
+  // console.log(props);
+
 
   return (
     <div>
       Teacher Question Container
-      <h1> {props.currentQuestion} </h1>
     </div>
   );
 }

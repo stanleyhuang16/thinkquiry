@@ -21,13 +21,13 @@ function Room() {
   const [roomData, setRoomData] = useState({
     currentQuestion: 'What up dude?',
     studentAnswer: '',
-    questionType: '',
+    questionType: 'short',
     multipleChoiceText: [],
     multipleChoiceCount: [],
     shortAnswerText: [],
     studentNames: [],
     currentStudentName: '',
-    admin: true
+    admin: false
   });
 
   // const admin = false; //need to hook this admin boolean up to authentication;
@@ -35,7 +35,8 @@ function Room() {
   return (
     <div>
       <RoomName>Room Name: {roomName}</RoomName>
-      {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : <StudentAnswerContainer />}
+      {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : 
+        <StudentAnswerContainer roomData = { roomData } />}
       <StudentResponsesContainer />
     </div>
   );
