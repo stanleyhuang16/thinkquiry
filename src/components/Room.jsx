@@ -21,7 +21,7 @@ function Room() {
   const [roomData, setRoomData] = useState({
     currentQuestion: 'What up dude?',
     studentAnswer: '',
-    questionType: 'short',
+    questionType: 'multiple',
     multipleChoiceText: [],
     multipleChoiceCount: [],
     shortAnswerText: [],
