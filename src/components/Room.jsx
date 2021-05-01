@@ -27,7 +27,7 @@ function Room() {
     shortAnswerText: [],
     studentNames: [],
     currentStudentName: '',
-    admin: false
+    admin: true
   });
 
   // const admin = false; //need to hook this admin boolean up to authentication;

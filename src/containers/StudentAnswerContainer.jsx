@@ -1,18 +1,17 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 function StudentAnswerContainer(props) {
+  const QuestionDisplay = styled.div`
+    border: solid red;
+  `;
 
-const QuestionDisplay = styled.div`
-  border: solid red;
-`
+  const ResponseDisplayShort = styled.div`
+    border: solid blue;
+  `;
 
-const ResponseDisplayShort = styled.div`
-  border: solid blue;
-`
-
-const ResponseDisplayMultiple = styled.div`
-  border: solid yellow;
-`
+  const ResponseDisplayMultiple = styled.div`
+    border: solid yellow;
+  `;
 
   return (
     <div>
@@ -21,17 +20,16 @@ const ResponseDisplayMultiple = styled.div`
         <h4>Current Question</h4>
         <h4>{props.roomData.currentQuestion}</h4>
       </QuestionDisplay>
-      { props.roomData.questionType === 'multiple' ? 
+      {props.roomData.questionType === "multiple" ? (
         <ResponseDisplayMultiple>
           <h4>Multiple Choice</h4>
-        </ResponseDisplayMultiple>  :
+        </ResponseDisplayMultiple>
+      ) : (
         <ResponseDisplayShort>
           <h4>Short Answer</h4>
         </ResponseDisplayShort>
-        }
-        <button>
-          Submit
-        </button>
+      )}
+      <button>Submit</button>
     </div>
   );
 }
