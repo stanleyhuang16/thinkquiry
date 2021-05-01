@@ -6,6 +6,7 @@ function StudentAnswerContainer(props) {
   const [multipleChoiceAnswer, setMultipleChoiceAnswer] = useState('');
   const [shortAnswer, setShortAnswer] = useState('');
 
+  // should move these styled components to a separate file
   const QuestionDisplay = styled.div`
     border: solid red;
   `;
@@ -24,8 +25,7 @@ function StudentAnswerContainer(props) {
 
   function handleChangeMultiple(e) {
     e.preventDefault();
-    console.log(e.target.value);
-    setMultipleChoiceAnswer(e.target.value);
+    // setMultipleChoiceAnswer(e.target.value);
   }
 
   function handleSubmitMultiple(e) {
@@ -35,7 +35,7 @@ function StudentAnswerContainer(props) {
 
   function handleChangeShort(e) {
     e.preventDefault();
-    setShortAnswer(e.target.value);
+    // setShortAnswer(e.target.value);
   }
 
   function handleSubmitShort(e) {

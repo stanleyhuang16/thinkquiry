@@ -6,6 +6,7 @@ function TeacherQuestionContainer(props) {
   const [multipleChoiceQuestion, setMultipleChoiceQuestion] = useState('');
   const [shortQuestion, setShortQuestion] = useState('');
 
+  // should move these styled components to a separate file
   const EnterQuestionShort = styled.div`
     border: solid blue;
   `;
