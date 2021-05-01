@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import {
-  useParams,  
+  useParams, 
 } from "react-router-dom";
 
 import styled from 'styled-components';
@@ -19,23 +19,23 @@ function Room() {
   const { roomName } = useParams();
 
   const [roomData, setRoomData] = useState({
-    currentQuestion: '',
+    currentQuestion: 'What up dude?',
     studentAnswer: '',
     questionType: '',
     multipleChoiceText: [],
     multipleChoiceCount: [],
     shortAnswerText: [],
     studentNames: [],
-    currentStudentName: ''
+    currentStudentName: '',
+    admin: true
   });
 
-  const admin = false; //need to hook this admin boolean up to authentication;
+  // const admin = false; //need to hook this admin boolean up to authentication;
 
   return (
     <div>
       <RoomName>Room Name: {roomName}</RoomName>
-      {admin ? <TeacherQuestionContainer /> : <StudentAnswerContainer />} 
-
+      {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : <StudentAnswerContainer />}
       <StudentResponsesContainer />
     </div>
   );
