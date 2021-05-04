@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const http = require('http');
 const server = http.createServer(app);
@@ -19,6 +21,23 @@ app.use(cors());
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
+});
+
+console.log('MONGO_URI:', process.env.MONGO_URI);
+
+mongoose
+  .connect(process.env.MONGO_URI, {
+    // options for the connect method to parse the URI
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // sets the name of the DB that our collections are part of
+    dbName: 'thinkquiry',
+  })
+  .then(() => console.log('Connected to Mongo DB.'))
+  .catch((err) => console.log(err));
+
+mongoose.connection.once('open', () => {
+  console.log('Connected to Database');
 });
 
 // Websockets/Socket.io stuff
