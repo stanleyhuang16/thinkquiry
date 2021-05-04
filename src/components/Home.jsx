@@ -8,14 +8,8 @@ import { Redirect } from 'react-router';
 
 // save socket and put in app
 const Home = ({ setSocket }) => {
-  const [joinRoom, setJoinRoom] = useState('');
-  const [name, setName] = useState('');
-  const [joinAdmin, setJoinAdmin] = useState('');
-  const [usePw, setUsePw] = useState('');
-  const [createRoom, setCreateRoom] = useState('');
-  const [createAdminPw, setCreateAdminPw] = useState('');
 
-  const handleSubmitJoinRoom = (e) => {
+  const handleSubmitJoinRoom = (e, inputValue) => {
     e.preventDefault();
 
     // Create the socket connection between 3000 and 5000
@@ -23,15 +17,15 @@ const Home = ({ setSocket }) => {
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
-    console.log('joinRoom: ', joinRoom);
-    console.log('name:', name);
+    console.log('joinRoom: ', inputValue);
+   
 
     // do mongoDB stuff..
 
-    socket.emit('joinRoom', joinRoom);
+    // socket.emit('joinRoom', joinRoom);
   };
 
-  const handleSubmitJoinAdmin = (e) => {
+  const handleSubmitJoinAdmin = (e, inputValue) => {
     e.preventDefault();
 
     // Create the socket connection between 3000 and 5000
@@ -39,15 +33,15 @@ const Home = ({ setSocket }) => {
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
-    console.log('joinAdmin: ', joinAdmin);
-    console.log('usePw:', usePw);
+    console.log('joinAdmin: ', inputValue);
+ 
 
     // do mongoDB stuff..
 
-    socket.emit('joinAdmin', joinAdmin);
+    // socket.emit('joinAdmin', joinAdmin);
   };
 
-  const handleSubmitCreateRoom = (e) => {
+  const handleSubmitCreateRoom = (e, inputValue) => {
     e.preventDefault();
 
     // Create the socket connection between 3000 and 5000
@@ -55,12 +49,12 @@ const Home = ({ setSocket }) => {
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
-    console.log('createRoom: ', createRoom);
-    console.log('createAdminPw:', createAdminPw);
+    console.log('createRoom: ', inputValue);
+
 
     // do mongoDB stuff..
 
-    socket.emit('createdRoom', createRoom);
+    // socket.emit('createdRoom', createRoom);
   };
 
   return (
@@ -75,7 +69,7 @@ const Home = ({ setSocket }) => {
           submitForm={handleSubmitJoinRoom}
           input1='RoomName'
           input2='ParticipantName'
-          id='joinRoom'
+
           placeholder1='Room'
           placeholder2='Your Name'
         />
@@ -84,7 +78,7 @@ const Home = ({ setSocket }) => {
           submitForm={handleSubmitJoinAdmin}
           input1='RoomName'
           input2='AdminPassword'
-          id='joinAdmin'
+         
           placeholder1='Room'
           placeholder2='Admin Password'
         />
@@ -93,7 +87,7 @@ const Home = ({ setSocket }) => {
           submitForm={handleSubmitCreateRoom}
           input1='RoomName'
           input2='createAdminPw'
-          id='createRoom'
+  
           placeholder1='Create Room'
           placeholder2='Create Password'
         />
