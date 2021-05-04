@@ -20,7 +20,7 @@ function Room(socket) {
   const [roomData, setRoomData] = useState({
     currentQuestion: 'What up dude?',
     studentAnswer: '',
-    questionType: '',
+    questionType: 'short',
     multipleChoiceText: [],
     multipleChoiceCount: [],
     shortAnswerText: [],
@@ -31,20 +31,17 @@ function Room(socket) {
 
   // const admin = false; //need to hook this admin boolean up to authentication;
 
-  socket.on('createdRoom', (roomName) => {
-    console.log('createdRooms roomName: ', roomName);
-  });
+  // socket.on('createdRoom', (roomName) => {
+  //   console.log('createdRooms roomName: ', roomName);
+  // });
 
   return (
-    <div>
+    <>
       <RoomName>Room Name: {roomName}</RoomName>
-      {roomData.admin ? (
-        <TeacherQuestionContainer roomData={roomData} />
-      ) : (
-        <StudentAnswerContainer />
-      )}
+      {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : 
+        <StudentAnswerContainer roomData = { roomData } />}
       <StudentResponsesContainer />
-    </div>
+    </>
   );
 }
 
