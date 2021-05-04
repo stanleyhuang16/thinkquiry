@@ -33,12 +33,12 @@ function Room() {
   // const admin = false; //need to hook this admin boolean up to authentication;
 
   return (
-    <div>
+    <>
       <RoomName>Room Name: {roomName}</RoomName>
       {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : 
         <StudentAnswerContainer roomData = { roomData } />}
       <StudentResponsesContainer />
-    </div>
+    </>
   );
 }
 

@@ -44,7 +44,7 @@ function StudentAnswerContainer(props) {
   }
 
   return (
-    <div>
+    <>
       Student Answer Container
       <QuestionDisplay>
         <h4>Current Question</h4>
@@ -85,7 +85,7 @@ function StudentAnswerContainer(props) {
       <SubmitButton>
         Submit
       </SubmitButton>
-    </div>
+    </>
   );
 }
 

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from "styled-components";
+import { useHistory } from 'react-router-dom';
 
 function TeacherQuestionContainer(props) {
   const [questionType, setQuestionType] = useState('');
   const [multipleChoiceQuestion, setMultipleChoiceQuestion] = useState('');
   const [shortQuestion, setShortQuestion] = useState('');
+  const history = useHistory(); // use to redirect after request to server?
 
   // should move these styled components to a separate file
   const EnterQuestionShort = styled.div`
@@ -27,6 +29,7 @@ function TeacherQuestionContainer(props) {
   function handleSubmitShort(e) {
     e.preventDefault();
     // something with emit here, send back to server so it can send to other websockets
+    // history push to another component?
   }
 
   function handleChangeMultiple(e) {
@@ -37,10 +40,11 @@ function TeacherQuestionContainer(props) {
   function handleSubmitMultiple(e) {
     e.preventDefault();
     // something with emit here, send back to server so it can send to other websockets
+    // history push to another component?
   }
 
   return (
-    <div>
+    <>
       Teacher Question Container
       {props.roomData.questionType === "multiple" ? (
         <EnterQuestionMultiple>
@@ -86,7 +90,7 @@ function TeacherQuestionContainer(props) {
           </form>
         </EnterQuestionShort>
       )}
-    </div>
+    </>
   );
 }
 
