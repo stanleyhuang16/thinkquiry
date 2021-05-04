@@ -35,6 +35,15 @@ io.on('connection', (socket) => {
 		socket.emit('joinRoom', 'lala');
 	});
 
+	socket.on('validRoom', ({ room, name }) => {
+		console.log('in validRoom!');
+
+		console.log("validRoom's room: ", room);
+		console.log("validRoom's name: ", name);
+
+		socket.emit('joinRoom', 'lala');
+	});
+
 	// Whenever a user disconnects, run this
 	socket.on('disconnect', () => {
 		console.log('a user disconnected');

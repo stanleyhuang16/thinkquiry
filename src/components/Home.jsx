@@ -1,58 +1,105 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 
-const Home = () => {
-	const [room, setRoom] = useState('');
-	const [name, setName] = useState('');
+import HomeForm from './HomeForm.jsx';
+import { AppContainer } from './Container.style';
+import { Button, ButtonLabel } from './Button.style';
+import { Redirect } from 'react-router';
 
-	const socket = io('http://localhost:5000');
+// save socket and put in app
+const Home = ({ setSocket }) => {
+  const [joinRoom, setJoinRoom] = useState('');
+  const [name, setName] = useState('');
+  const [joinAdmin, setJoinAdmin] = useState('');
+  const [usePw, setUsePw] = useState('');
+  const [createRoom, setCreateRoom] = useState('');
+  const [createAdminPw, setCreateAdminPw] = useState('');
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
+  const handleSubmitJoinRoom = (e) => {
+    e.preventDefault();
 
-		console.log('in handleSubmit: ', room, name);
+    // Create the socket connection between 3000 and 5000
+    const socket = io('http://localhost:5000');
+    // Keep the reference to socket connection for use in other components
+    setSocket(socket);
 
-		// do MongoDB stuff here..
+    console.log('joinRoom: ', joinRoom);
+    console.log('name:', name);
 
-		if ('room is valid') {
-			socket.emit('validRoom', { room, name });
-		}
-	};
+    // do mongoDB stuff..
 
-	return (
-		<div>
-			Here's the app
-			<div>
-				<h1>Logo</h1>
-				<h1>thinkquiry.io</h1>
-			</div>
-			<div>
-				<h1>Thinkquiry!</h1>
-				<h1>Join Room!</h1>
-				<form onSubmit={handleSubmit}>
-					<input placeholder="Room" onChange={(e) => setRoom(e.target.value)} />
-					<input placeholder="Name" onChange={(e) => setName(e.target.value)} />
-					<button type="submit" onClick={handleSubmit}>
-						Enter!
-					</button>
-				</form>
-			</div>
-			<div>
-				<h1>Join Existing Room As Admin</h1>
-				<input placeholder="Room"></input>
-				<input placeholder="NAME TOO?"></input>
-				<input placeholder="password"></input>
-				<button>Enter</button>
-			</div>
-			<div>
-				<h1>Create a New Room</h1>
-				<input placeholder="Room Name"></input>
-				<input placeholder="Create Password"></input>
-				<button>Enter</button>
-				<div></div>
-			</div>
-		</div>
-	);
+    socket.emit('joinRoom', joinRoom);
+  };
+
+  const handleSubmitJoinAdmin = (e) => {
+    e.preventDefault();
+
+    // Create the socket connection between 3000 and 5000
+    const socket = io('http://localhost:5000');
+    // Keep the reference to socket connection for use in other components
+    setSocket(socket);
+
+    console.log('joinAdmin: ', joinAdmin);
+    console.log('usePw:', usePw);
+
+    // do mongoDB stuff..
+
+    socket.emit('joinAdmin', joinAdmin);
+  };
+
+  const handleSubmitCreateRoom = (e) => {
+    e.preventDefault();
+
+    // Create the socket connection between 3000 and 5000
+    const socket = io('http://localhost:5000');
+    // Keep the reference to socket connection for use in other components
+    setSocket(socket);
+
+    console.log('createRoom: ', createRoom);
+    console.log('createAdminPw:', createAdminPw);
+
+    // do mongoDB stuff..
+
+    socket.emit('createdRoom', createRoom);
+  };
+
+  return (
+    <AppContainer>
+      <div>
+        <h3>Logo</h3>
+        <h3>thinkquiry.io</h3>
+      </div>
+      <div>
+        <p>Join Room</p>
+        <HomeForm
+          submitForm={handleSubmitJoinRoom}
+          input1='RoomName'
+          input2='ParticipantName'
+          id='joinRoom'
+          placeholder1='Room'
+          placeholder2='Your Name'
+        />
+        <p>Join Room as Admin</p>
+        <HomeForm
+          submitForm={handleSubmitJoinAdmin}
+          input1='RoomName'
+          input2='AdminPassword'
+          id='joinAdmin'
+          placeholder1='Room'
+          placeholder2='Admin Password'
+        />
+        <p>Create Room</p>
+        <HomeForm
+          submitForm={handleSubmitCreateRoom}
+          input1='RoomName'
+          input2='createAdminPw'
+          id='createRoom'
+          placeholder1='Create Room'
+          placeholder2='Create Password'
+        />
+      </div>
+    </AppContainer>
+  );
 };
 
 export default Home;
