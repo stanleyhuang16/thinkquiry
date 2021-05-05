@@ -20,12 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/public/index.html');
-});
-
-console.log('MONGO_URI:', process.env.MONGO_URI);
-
 mongoose.connect(process.env.MONGO_URI, {
 	// options for the connect method to parse the URI
 	useNewUrlParser: true,
@@ -36,8 +30,8 @@ mongoose.connect(process.env.MONGO_URI, {
 
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 
-app.get('/api/:roomName', roomsController.checkRoom);
-app.post('/api/:roomName', roomsController.createRoom);
+app.post('/api/checkRoom', roomsController.checkRoom);
+app.post('/api/createRoom', roomsController.createRoom);
 
 // Websockets/Socket.io stuff
 // Whenever a user connects, run this
