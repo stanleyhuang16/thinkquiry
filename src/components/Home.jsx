@@ -8,94 +8,98 @@ import { Redirect } from 'react-router';
 
 // save socket and put in app
 const Home = ({ setSocket }) => {
+	const handleSubmitJoinRoom = (e, inputValue) => {
+		e.preventDefault();
 
-  const handleSubmitJoinRoom = (e, inputValue) => {
-    e.preventDefault();
+		// Create the socket connection between 3000 and 5000
+		const socket = io('http://localhost:5000');
+		// Keep the reference to socket connection for use in other components
+		setSocket(socket);
 
-    // Create the socket connection between 3000 and 5000
-    const socket = io('http://localhost:5000');
-    // Keep the reference to socket connection for use in other components
-    setSocket(socket);
+		console.log('joinRoom: ', inputValue);
 
-    console.log('joinRoom: ', inputValue);
-   
+		// do mongoDB stuff..
 
-    // do mongoDB stuff..
+		// socket.emit('joinRoom', joinRoom);
+	};
 
-    // socket.emit('joinRoom', joinRoom);
-  };
+	const handleSubmitJoinAdmin = (e, inputValue) => {
+		e.preventDefault();
 
-  const handleSubmitJoinAdmin = (e, inputValue) => {
-    e.preventDefault();
+		// Create the socket connection between 3000 and 5000
+		const socket = io('http://localhost:5000');
+		// Keep the reference to socket connection for use in other components
+		setSocket(socket);
 
-    // Create the socket connection between 3000 and 5000
-    const socket = io('http://localhost:5000');
-    // Keep the reference to socket connection for use in other components
-    setSocket(socket);
+		console.log('joinAdmin: ', inputValue);
 
-    console.log('joinAdmin: ', inputValue);
- 
+		// do mongoDB stuff..
 
-    // do mongoDB stuff..
+		// socket.emit('joinAdmin', joinAdmin);
+	};
 
-    // socket.emit('joinAdmin', joinAdmin);
-  };
+	const handleSubmitCreateRoom = (e, inputValue) => {
+		e.preventDefault();
 
-  const handleSubmitCreateRoom = (e, inputValue) => {
-    e.preventDefault();
+		// Create the socket connection between 3000 and 5000
+		const socket = io('http://localhost:5000');
+		// Keep the reference to socket connection for use in other components
+		setSocket(socket);
 
-    // Create the socket connection between 3000 and 5000
-    const socket = io('http://localhost:5000');
-    // Keep the reference to socket connection for use in other components
-    setSocket(socket);
+		// Create new active room and store in database
+		const createRoom = (inputRoomName, adminPassword) => {
+			fetch('/api/:roomName', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ inputRoomName, adminPassword }),
+			})
+				.then((res) => res.json())
+				.then(({ roomName }) => {
+					console.log("createRoom's roomName: ", roomName);
 
-    console.log('createRoom: ', inputValue);
+					return roomName
+						? socket.emit('joinRoom', { roomName, adminPassword })
+						: alert('Invalid room name/password. Please try again.');
+				})
+				.catch((err) => console.log(`createRoom error: ${err}`));
+		};
+		createRoom(inputValue.input1, inputValue.input2);
+	};
 
-
-    // do mongoDB stuff..
-
-    // socket.emit('createdRoom', createRoom);
-  };
-
-  return (
-    <AppContainer>
-      <div>
-        <h3>Logo</h3>
-        <h3>thinkquiry.io</h3>
-      </div>
-      <div>
-        <p>Join Room</p>
-        <HomeForm
-          submitForm={handleSubmitJoinRoom}
-          input1='RoomName'
-          input2='ParticipantName'
-
-          placeholder1='Room'
-          placeholder2='Your Name'
-        />
-        <p>Join Room as Admin</p>
-        <HomeForm
-          submitForm={handleSubmitJoinAdmin}
-          input1='RoomName'
-          input2='AdminPassword'
-         
-          placeholder1='Room'
-          placeholder2='Admin Password'
-        />
-        <p>Create Room</p>
-        <HomeForm
-          submitForm={handleSubmitCreateRoom}
-          input1='RoomName'
-          input2='createAdminPw'
-  
-          placeholder1='Create Room'
-          placeholder2='Create Password'
-        />
-      </div>
-    </AppContainer>
-  );
-
-
+	return (
+		<AppContainer>
+			<div>
+				<h3>Logo</h3>
+				<h3>thinkquiry.io</h3>
+			</div>
+			<div>
+				<p>Join Room</p>
+				<HomeForm
+					submitForm={handleSubmitJoinRoom}
+					input1="RoomName"
+					input2="ParticipantName"
+					placeholder1="Room"
+					placeholder2="Your Name"
+				/>
+				<p>Join Room as Admin</p>
+				<HomeForm
+					submitForm={handleSubmitJoinAdmin}
+					input1="RoomName"
+					input2="AdminPassword"
+					placeholder1="Room"
+					placeholder2="Admin Password"
+				/>
+				<p>Create Room</p>
+				<HomeForm
+					submitForm={handleSubmitCreateRoom}
+					input1="RoomName"
+					input2="createAdminPw"
+					placeholder1="Create Room"
+					placeholder2="Create Password"
+				/>
+			</div>
+		</AppContainer>
+	);
 };
 
 export default Home;
