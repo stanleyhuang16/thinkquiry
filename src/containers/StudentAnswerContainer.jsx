@@ -18,6 +18,10 @@ const SubmitButton = styled.button`
 color: violet;
 `;
 
+const AnswerBox = styled.div`
+border: solid green;
+`;
+
 function StudentAnswerContainer(props) {
   const [questionType, setQuestionType] = useState('short answer');
   const [question, setQuestion] = useState('test question');
@@ -87,22 +91,30 @@ function StudentAnswerContainer(props) {
         <ResponseDisplayMultiple>
           <h4>Multiple Choice</h4>
           <form onSubmit={handleSubmitAnswer}>
+            <AnswerBox>
             {mCChoices['A']}
             <label>
               <input type='radio' value='A' checked={multipleChoiceAnswer === 'A'} onChange={handleChangeMultiple}/>A
             </label>
+            </AnswerBox>
+            <AnswerBox>
             {mCChoices['B']}
             <label>
               <input type='radio' value='B' checked={multipleChoiceAnswer === 'B'} onChange={handleChangeMultiple}/>B
             </label>
+            </AnswerBox>
+            <AnswerBox>
             {mCChoices['C']}
             <label>
               <input type='radio' value='C' checked={multipleChoiceAnswer === 'C'} onChange={handleChangeMultiple}/>C
             </label>
+            </AnswerBox>
+            <AnswerBox>
             {mCChoices['D']}
             <label>
               <input type='radio' value='D' checked={multipleChoiceAnswer === 'D'} onChange={handleChangeMultiple}/>D
             </label>
+            </AnswerBox>
             <input type='submit' value='Submit Multiple Choice Answer'/>
           </form>
         </ResponseDisplayMultiple>
@@ -119,9 +131,6 @@ function StudentAnswerContainer(props) {
           </form>
         </ResponseDisplayShort>
       )}
-      <SubmitButton>
-        Submit
-      </SubmitButton>
     </>
   );
 }
