@@ -7,7 +7,7 @@ import { Button, ButtonLabel } from './Button.style';
 import { Redirect } from 'react-router';
 
 // save socket and put in app
-const Home = ({ setSocket }) => {
+const Home = ({ setSocket, history }) => {
 	const handleSubmitJoinRoom = (e, inputValue) => {
 		e.preventDefault();
 
@@ -16,11 +16,25 @@ const Home = ({ setSocket }) => {
 		// Keep the reference to socket connection for use in other components
 		setSocket(socket);
 
-		console.log('joinRoom: ', inputValue);
-
-		// do mongoDB stuff..
-
-		// socket.emit('joinRoom', joinRoom);
+		// Check if inputted room exists in database
+		const checkRoom = (roomName, personName) => {
+			fetch('/api/checkRoom', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ roomName }),
+			})
+				.then((res) => res.json())
+				.then(({ roomName }) => {
+					if (roomName) {
+						socket.emit('joinRoom', { roomName, adminPassword });
+						history.push(`/${roomName}`);
+					} else {
+						alert('Invalid room name/password. Please try again.');
+					}
+				})
+				.catch((err) => console.error(`checkRoom error: ${err}`));
+		};
+		checkRoom(inputValue.input1, inputValue.input2);
 	};
 
 	const handleSubmitJoinAdmin = (e, inputValue) => {
@@ -34,8 +48,6 @@ const Home = ({ setSocket }) => {
 		console.log('joinAdmin: ', inputValue);
 
 		// do mongoDB stuff..
-
-		// socket.emit('joinAdmin', joinAdmin);
 	};
 
 	const handleSubmitCreateRoom = (e, inputValue) => {
@@ -47,21 +59,22 @@ const Home = ({ setSocket }) => {
 		setSocket(socket);
 
 		// Create new active room and store in database
-		const createRoom = (inputRoomName, adminPassword) => {
-			fetch('/api/:roomName', {
+		const createRoom = (roomName, adminPassword) => {
+			fetch('/api/createRoom', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ inputRoomName, adminPassword }),
+				body: JSON.stringify({ roomName, adminPassword }),
 			})
 				.then((res) => res.json())
 				.then(({ roomName }) => {
-					console.log("createRoom's roomName: ", roomName);
-
-					return roomName
-						? socket.emit('joinRoom', { roomName, adminPassword })
-						: alert('Invalid room name/password. Please try again.');
+					if (roomName) {
+						socket.emit('joinRoom', { roomName, adminPassword });
+						history.push(`/${roomName}`);
+					} else {
+						alert('Invalid room name/password. Please try again.');
+					}
 				})
-				.catch((err) => console.log(`createRoom error: ${err}`));
+				.catch((err) => console.error(`createRoom error: ${err}`));
 		};
 		createRoom(inputValue.input1, inputValue.input2);
 	};
