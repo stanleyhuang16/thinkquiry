@@ -26,13 +26,13 @@ const Home = ({ setSocket, history }) => {
 				.then((res) => res.json())
 				.then(({ roomName }) => {
 					if (roomName) {
-						socket.emit('joinRoom', { roomName, adminPassword });
+						socket.emit('joinRoom', { roomName });
 						history.push(`/${roomName}`);
 					} else {
 						alert('Invalid room name/password. Please try again.');
 					}
 				})
-				.catch((err) => console.error(`checkRoom error: ${err}`));
+				.catch((err) => console.error(err));
 		};
 		checkRoom(inputValue.input1, inputValue.input2);
 	};
@@ -74,7 +74,7 @@ const Home = ({ setSocket, history }) => {
 						alert('Invalid room name/password. Please try again.');
 					}
 				})
-				.catch((err) => console.error(`createRoom error: ${err}`));
+				.catch((err) => console.error(err));
 		};
 		createRoom(inputValue.input1, inputValue.input2);
 	};
