@@ -8,41 +8,45 @@ import TeacherQuestionContainer from '../containers/TeacherQuestionContainer';
 import StudentResponsesContainer from '../containers/StudentResponsesContainer';
 
 const RoomName = styled.h3`
-  font-size: 3rem;
+	font-size: 3rem;
 `;
 
-function Room(socket) {
-  // We can use the `useParams` hook here to access
+function Room({ socket }) {
+	console.log('socket', socket);
+	// We can use the `useParams` hook here to access
 
-  // the dynamic pieces of the URL.
-  const { roomName } = useParams();
+	// the dynamic pieces of the URL.
+	const { roomName } = useParams();
 
-  const [roomData, setRoomData] = useState({
-    currentQuestion: 'What up dude?',
-    studentAnswer: '',
-    questionType: 'short',
-    multipleChoiceText: [],
-    multipleChoiceCount: [],
-    shortAnswerText: [],
-    studentNames: [],
-    currentStudentName: '',
-    admin: true,
-  });
+	const [roomData, setRoomData] = useState({
+		currentQuestion: 'What up dude?',
+		studentAnswer: '',
+		questionType: 'short',
+		multipleChoiceText: [],
+		multipleChoiceCount: [],
+		shortAnswerText: [],
+		studentNames: [],
+		currentStudentName: '',
+		admin: true,
+	});
 
-  // const admin = false; //need to hook this admin boolean up to authentication;
+	// const admin = false; //need to hook this admin boolean up to authentication;
 
-  // socket.on('createdRoom', (roomName) => {
-  //   console.log('createdRooms roomName: ', roomName);
-  // });
+	// socket.on('hi', ({ test }) => {
+	// 	console.log('in hi: ', test);
+	// });
 
-  return (
-    <>
-      <RoomName>Room Name: {roomName}</RoomName>
-      {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : 
-        <StudentAnswerContainer roomData = { roomData } />}
-      <StudentResponsesContainer />
-    </>
-  );
+	return (
+		<>
+			<RoomName>Room Name: {roomName}</RoomName>
+			{roomData.admin ? (
+				<TeacherQuestionContainer roomData={roomData} />
+			) : (
+				<StudentAnswerContainer roomData={roomData} />
+			)}
+			<StudentResponsesContainer />
+		</>
+	);
 }
 
 export default Room;
