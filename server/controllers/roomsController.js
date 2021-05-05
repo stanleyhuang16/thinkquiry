@@ -15,7 +15,7 @@ roomsController.createRoom = (req, res) => {
 };
 
 roomsController.checkRoom = (req, res) => {
-	const { roomName } = req.params;
+	const { roomName } = req.body;
 
 	Room.findOne({ roomName })
 		.exec()
