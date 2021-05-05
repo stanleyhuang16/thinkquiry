@@ -26,7 +26,7 @@ function Room(socket) {
     shortAnswerText: [],
     studentNames: [],
     currentStudentName: '',
-    admin: true,
+    admin: false,
   });
 
   // const admin = false; //need to hook this admin boolean up to authentication;

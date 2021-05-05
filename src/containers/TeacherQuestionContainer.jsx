@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from "styled-components";
-import { useHistory } from 'react-router-dom';
+import { io } from "socket.io-client";
 
 import ToggleSwitch from '../components/ToggleSwitch';
 
@@ -35,13 +35,14 @@ function TeacherQuestionContainer(props) {
     setQuestion(e.target.value);
   }
 
+  function handleChangeMultiple(setMultiple, e) {
+    setMultiple(e.target.value)
+  }
+
   function handleSubmitQuestion(e) {
     e.preventDefault();
     setEditingQuestion(false);
-  }
-
-  function handleChangeMultiple(setMultiple, e) {
-    setMultiple(e.target.value)
+    // do websocket stuff here
   }
 
   function handleToggleChange(e) {
@@ -99,7 +100,7 @@ function TeacherQuestionContainer(props) {
               Enter Question
               <input type='text' name='shortQuestion' value={question} onChange={handleChangeQuestion}></input>
             </label>
-            <input type='submit' value='Submit Short Answer'/>
+            <input type='submit' value='Submit Short Question'/>
           </form>
         </EnterQuestionShort>
       )}
