@@ -9,7 +9,7 @@ roomsController.createRoom = (req, res) => {
 		.then((room) =>
 			room
 				? res.status(200).json(room)
-				: res.status(418).json({ error: 'Failed to create room!' })
+				: res.status(500).json({ err: 'Failed to create room!' })
 		)
 		.catch((err) => res.status(500).json(err));
 };
@@ -22,7 +22,7 @@ roomsController.checkRoom = (req, res) => {
 		.then((room) =>
 			room
 				? res.status(200).json(room)
-				: res.status(418).json({ error: 'No room found by that name!' })
+				: res.status(404).json({ err: 'No room found by that name!' })
 		)
 		.catch((err) => res.status(500).json(err));
 };
