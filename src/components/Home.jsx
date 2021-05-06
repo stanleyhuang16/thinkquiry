@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
 import HomeForm from './HomeForm.jsx';
 import { AppContainer } from './Container.style';
-import { Button, ButtonLabel } from './Button.style';
-import { Redirect } from 'react-router';
 
 // save socket and put in app
-const Home = ({ setSocket, history }) => {
+const Home = ({ setSocket }) => {
+	const history = useHistory();
+
 	const handleSubmitJoinRoom = (e, inputValue) => {
 		e.preventDefault();
 
@@ -27,7 +27,7 @@ const Home = ({ setSocket, history }) => {
 				.then(({ roomName }) => {
 					if (roomName) {
 						socket.emit('joinRoom', { roomName });
-						// history.push(`/${roomName}`);
+						history.push(`/${roomName}`);
 					} else {
 						alert('Invalid room name/password. Please try again.');
 					}
