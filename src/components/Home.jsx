@@ -27,7 +27,7 @@ const Home = ({ setSocket, history }) => {
 				.then(({ roomName }) => {
 					if (roomName) {
 						socket.emit('joinRoom', { roomName });
-						history.push(`/${roomName}`);
+						// history.push(`/${roomName}`);
 					} else {
 						alert('Invalid room name/password. Please try again.');
 					}
@@ -69,7 +69,7 @@ const Home = ({ setSocket, history }) => {
 				.then(({ roomName }) => {
 					if (roomName) {
 						socket.emit('joinRoom', { roomName, adminPassword });
-						history.push(`/${roomName}`);
+						// history.push(`/${roomName}`);
 					} else {
 						alert('Invalid room name/password. Please try again.');
 					}
