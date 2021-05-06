@@ -44,21 +44,18 @@ app.post(
 );
 
 // Websockets/Socket.io stuff
-// Whenever a user connects, run this
 io.on('connection', (socket) => {
 	console.log('a user connected');
 
-	socket.on('joinRoom', ({ roomName, adminPassword, personName }) => {
-		console.log("joinRoom's roomName: ", roomName);
-		console.log("joinRoom's adminPassword: ", adminPassword);
-		console.log("joinRoom's personName: ", personName);
+	socket.on('validInputs', ({ roomName, adminPassword, personName }) => {
+		console.log("validInputs' roomName: ", roomName);
+		console.log("validInputs' adminPassword: ", adminPassword);
+		console.log("validInputs' personName: ", personName);
 
 		socket.join(`${roomName}`);
-		// send message to that room
-		io.to(roomName).emit('test');
+		io.to(roomName).emit('joinRoom', { roomName, adminPassword, personName });
 	});
 
-	// Whenever a user disconnects, run this
 	socket.on('disconnect', () => console.log('a user disconnected'));
 });
 
