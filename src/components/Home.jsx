@@ -33,7 +33,7 @@ const Home = ({ setSocket }) => {
 					if (err) return alert(err);
 
 					if (roomName) {
-						socket.emit('joinRoom', { roomName, personName });
+						socket.emit('validInputs', { roomName, personName });
 						history.push(`/${roomName}`);
 					}
 				})
@@ -63,11 +63,11 @@ const Home = ({ setSocket }) => {
 				body: JSON.stringify({ roomName, adminPassword }),
 			})
 				.then((res) => res.json())
-				.then(({ roomName }) => {
+				.then(({ roomName, adminPassword }) => {
 					if (!roomName)
 						return alert('Invalid room name/password. Please try again.');
 
-					socket.emit('joinRoom', { roomName });
+					socket.emit('validInputs', { roomName, adminPassword });
 					history.push(`/${roomName}`);
 				})
 				.catch((err) => console.error(err));
@@ -100,7 +100,7 @@ const Home = ({ setSocket }) => {
 					if (err) return alert(err);
 
 					if (roomName) {
-						socket.emit('joinRoom', { roomName, adminPassword });
+						socket.emit('validInputs', { roomName, adminPassword });
 						history.push(`/${roomName}`);
 					}
 				})
