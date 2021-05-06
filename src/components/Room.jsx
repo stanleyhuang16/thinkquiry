@@ -17,18 +17,6 @@ function Room(socket) {
   // the dynamic pieces of the URL.
   const { roomName } = useParams();
 
-  // const [roomData, setRoomData] = useState({
-  //   currentQuestion: 'What up dude?',
-  //   studentAnswer: '',
-  //   questionType: 'short',
-  //   multipleChoiceText: [],
-  //   multipleChoiceCount: [],
-  //   shortAnswerText: [],
-  //   studentNames: [],
-  //   currentStudentName: '',
-  //   admin: false,
-  // });
-
   const [question, setQuestion] = useState('this is the question');
   const [questionType, setQuestionType] = useState('multiple choice'); //multiple choice or short answer
   const [mcChoices, setMCChoices] = useState({
@@ -62,7 +50,7 @@ function Room(socket) {
     ]
   );
 
-  const [roomType, setRoomType] = useState('student') // or student
+  const [roomType, setRoomType] = useState('teacher') // teacher or student
 
   const submitQuestion = () => {
     // do websocket stuff here
@@ -71,8 +59,6 @@ function Room(socket) {
   const submitAnswer = () => {
     // do websocket stuff here
   }
-
-  // const admin = false; //need to hook this admin boolean up to authentication;
 
   // socket.on('createdRoom', (roomName) => {
   //   console.log('createdRooms roomName: ', roomName);
@@ -83,7 +69,6 @@ function Room(socket) {
       <RoomName>Room Name: {roomName}</RoomName>
       {roomType === 'teacher' ? 
       <TeacherQuestionContainer
-        // roomData = { roomData } setRoomData = { setRoomData }
         question = { question } setQuestion = { setQuestion }
         questionType = { questionType } setQuestionType = { setQuestionType } 
         mcChoices = { mcChoices } setMCChoices = { setMCChoices }
@@ -95,7 +80,6 @@ function Room(socket) {
         submitQuestion = { submitQuestion }
       /> : 
       <StudentAnswerContainer
-        // roomData = { roomData } setRoomData = { setRoomData }
         question = { question } setQuestion = { setQuestion }
         questionType = { questionType } setQuestionType = { setQuestionType } 
         mcChoices = { mcChoices } setMCChoices = { setMCChoices }

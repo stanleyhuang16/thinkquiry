@@ -32,22 +32,12 @@ function TeacherQuestionContainer(props) {
     roomType, setRoomType,
     submitQuestion
   } = props;
-  // const [questionType, setQuestionType] = useState('short answer');
-  // const [multipleA, setMultipleA] = useState('Choice A');
-  // const [multipleB, setMultipleB] = useState('Choice B');
-  // const [multipleC, setMultipleC] = useState('Choice C');
-  // const [multipleD, setMultipleD] = useState('Choice D');
-  // const [question, setQuestion] = useState('Insert Question Text Here');
 
   const [editingQuestion, setEditingQuestion] = useState(true);
 
   function handleChangeQuestion(e) {
     setQuestion(e.target.value);
   }
-
-  // function handleChangeMultiple(setMultiple, e) {
-  //   setMultiple(e.target.value)
-  // }
 
   function handleChangeMultiple (choice, e) {
     if (choice === 'A') {
@@ -79,14 +69,11 @@ function TeacherQuestionContainer(props) {
   }
 
   function handleToggleChange(e) {
-    // e.preventDefault();
-    // console.log('handled toggle change');
     if (questionType === 'short answer') {
       setQuestionType('multiple choice');
     } else if (questionType === 'multiple choice') {
       setQuestionType('short answer');
     }
-    // console.log('state is currently :', questionType);
   }
 
   return (

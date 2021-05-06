@@ -34,56 +34,15 @@ function StudentAnswerContainer(props) {
     roomType, setRoomType,
     submitAnswer
   } = props;
-  // const [questionType, setQuestionType] = useState('short answer');
-  // const [question, setQuestion] = useState('test question');
-  // const [mCChoices, setMCChoices] = useState({
-  //   'A': 'test choice A',
-  //   'B': 'test choice B',
-  //   'C': 'test choice C',
-  //   'D': 'test choice D'
-  // })
-  // const [multipleChoiceAnswer, setMultipleChoiceAnswer] = useState('');
-  // const [shortAnswer, setShortAnswer] = useState('');
-
-  // socket io stuff
-  // {
-  //   questionType: 'multiple choice' or 'shortanswer',
-  //   question: 'something',
-  //   choiceA: 'choice a',
-  //   choiceB: 'choice b',
-  //   choiceC: 'choice c',
-  //   choiceD: 'choice d',
-  // }
-  // we grab the questionType, set it to the state questionType, and renders conditionally
-  // based on that
-
-  // example
-  // let objFromSocket = {
-  //   questionType: 'multiple',
-  //   question: 'what is 1 + 1',
-  //   choiceA: '2',
-  //   choiceB: '3',
-  //   choiceC: '4',
-  //   choiceD: '5'
-  // }
-  // // use useEffect to change the state of the questionType
-  // useEffect(() => {
-  //   setQuestionType(objFromSocket.questionType);
-  //   setQuestion(objFromSocket.question);
-  // });
 
   function handleChangeMultiple(e) {
-    // setMultipleChoiceAnswer(e.target.value);
     setMCAnswer(e.target.value);
   }
 
   function handleChangeShort(e) {
     e.preventDefault();
-    // setShortAnswers(e.target.value);
     setShortAnswer(e.target.value);
   }
-
-  // const socket = io('http://localhost:3000/abc'); // what is the path? room params?
 
   function handleSubmitAnswer(e) {
     submitAnswer();
