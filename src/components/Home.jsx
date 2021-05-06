@@ -18,6 +18,9 @@ const Home = ({ setSocket }) => {
 
 		// Check if inputted room exists in database
 		const checkRoom = (roomName, personName) => {
+			if (!roomName) return alert('Please input a valid room name.');
+			if (roomName.includes('/'))
+				return alert('Room names cannot include "/". Please try again.');
 			if (!personName) personName = 'Anonymous';
 
 			fetch('/api/checkRoom', {
@@ -49,6 +52,11 @@ const Home = ({ setSocket }) => {
 
 		// verify room and admin password in database
 		const checkRoomAdmin = (roomName, adminPassword) => {
+			if (!roomName) return alert('Please input a valid room name.');
+			if (roomName.includes('/'))
+				return alert('Room names cannot include "/". Please try again.');
+			if (!adminPassword) return alert('Please input a valid admin password.');
+
 			fetch('/api/checkRoomAdmin', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -56,14 +64,11 @@ const Home = ({ setSocket }) => {
 			})
 				.then((res) => res.json())
 				.then(({ roomName }) => {
-					console.log('roomName: ', roomName);
+					if (!roomName)
+						return alert('Invalid room name/password. Please try again.');
 
-					if (roomName) {
-						socket.emit('joinRoom', { roomName });
-						history.push(`/${roomName}`);
-					} else {
-						alert('Invalid room name/password. Please try again.');
-					}
+					socket.emit('joinRoom', { roomName });
+					history.push(`/${roomName}`);
 				})
 				.catch((err) => console.error(err));
 		};
@@ -80,6 +85,11 @@ const Home = ({ setSocket }) => {
 
 		// Create new active room and store in database
 		const createRoom = (roomName, adminPassword) => {
+			if (!roomName) return alert('Please input a valid room name.');
+			if (roomName.includes('/'))
+				return alert('Room names cannot include "/". Please try again.');
+			if (!adminPassword) return alert('Please input a valid admin password.');
+
 			fetch('/api/createRoom', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
