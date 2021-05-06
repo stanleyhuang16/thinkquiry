@@ -34,7 +34,7 @@ mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 app.post('/api/checkRoom', roomsController.checkRoom, (req, res) =>
 	res.locals.room
 		? res.status(200).json(res.locals.room)
-		: res.status(404).json({ err: 'Room does not exist! Please try again.' })
+		: res.json({ err: 'Room does not exist! Please try again.' })
 );
 app.post('/api/checkRoomAdmin', roomsController.checkRoomAdmin);
 app.post(
