@@ -31,6 +31,7 @@ mongoose.connect(process.env.MONGO_URI, {
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 
 app.post('/api/checkRoom', roomsController.checkRoom);
+app.post('/api/checkRoomAdmin', roomsController.checkRoomAdmin);
 app.post('/api/createRoom', roomsController.createRoom);
 
 // Websockets/Socket.io stuff
@@ -40,9 +41,10 @@ io.on('connection', (socket) => {
 
 	socket.on('joinRoom', ({ roomName, adminPassword }) => {
 		console.log("joinRoom's roomName: ", roomName);
-		console.log("joinRoom's adminPassword: ", adminPassword);
 
-		socket.emit('hi', { test: 'ing' });
+		socket.join(`${roomName}`);
+		// send message to that room
+		io.to(roomName).emit('test');
 	});
 
 	// Whenever a user disconnects, run this
