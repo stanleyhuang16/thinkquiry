@@ -18,18 +18,20 @@ const Home = ({ setSocket }) => {
 
 		// Check if inputted room exists in database
 		const checkRoom = (roomName, personName) => {
+			if (!personName) personName = 'Anonymous';
+
 			fetch('/api/checkRoom', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ roomName }),
 			})
 				.then((res) => res.json())
-				.then(({ roomName }) => {
+				.then(({ roomName, err }) => {
+					if (err) return alert(err);
+
 					if (roomName) {
-						socket.emit('joinRoom', { roomName });
+						socket.emit('joinRoom', { roomName, personName });
 						history.push(`/${roomName}`);
-					} else {
-						alert('Invalid room name/password. Please try again.');
 					}
 				})
 				.catch((err) => console.error(err));
@@ -84,12 +86,12 @@ const Home = ({ setSocket }) => {
 				body: JSON.stringify({ roomName, adminPassword }),
 			})
 				.then((res) => res.json())
-				.then(({ roomName }) => {
+				.then(({ roomName, err }) => {
+					if (err) return alert(err);
+
 					if (roomName) {
 						socket.emit('joinRoom', { roomName, adminPassword });
-						// history.push(`/${roomName}`);
-					} else {
-						alert('Invalid room name/password. Please try again.');
+						history.push(`/${roomName}`);
 					}
 				})
 				.catch((err) => console.error(err));
