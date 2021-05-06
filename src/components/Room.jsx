@@ -12,9 +12,7 @@ const RoomName = styled.h3`
 `;
 
 function Room({ socket }) {
-	console.log('socket', socket);
 	// We can use the `useParams` hook here to access
-
 	// the dynamic pieces of the URL.
 	const { roomName } = useParams();
 
@@ -31,10 +29,11 @@ function Room({ socket }) {
 	});
 
 	// const admin = false; //need to hook this admin boolean up to authentication;
-
-	// socket.on('hi', ({ test }) => {
-	// 	console.log('in hi: ', test);
-	// });
+	socket.on('joinRoom', ({ roomName, adminPassword, personName }) => {
+		console.log("joinRoom's roomName: ", roomName);
+		console.log("joinRoom's adminPassword: ", adminPassword);
+		console.log("joinRoom's personName: ", personName);
+	});
 
 	return (
 		<>
