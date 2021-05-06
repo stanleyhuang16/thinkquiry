@@ -22,18 +22,23 @@ roomsController.checkRoomAdmin = (req, res) => {
 		.then((room) =>
 			adminPassword === room?.adminPassword
 				? res.status(200).json(room)
-				: res.status(404).json({ err: 'No room found by that name!' })
+				: res.json({ err: 'Invalid room name/password! Please try again.' })
 		)
 		.catch((err) => res.status(500).json(err));
 };
 
 roomsController.createRoom = (req, res) => {
-	if (res.locals.room) return res.json({ err: 'Room already exists!' });
+	if (res.locals.room)
+		return res.json({ err: 'Room already exists! Please try again.' });
 
 	const { roomName, adminPassword } = req.body;
 
 	Room.create({ roomName, adminPassword })
-		.then((room) => (room ? res.status(200).json(room) : res.status(400)))
+		.then((room) =>
+			room
+				? res.status(200).json(room)
+				: res.json({ err: 'Unable to create room! Please try again.' })
+		)
 		.catch((err) => res.status(500).json(err));
 };
 
