@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 const roomSchema = new Schema(
 	{
-		roomName: { type: String, required: true },
-		adminPassword: { type: String, required: true },
+		roomName: { type: String, unique: true, required: true },
+		adminPassword: { type: String, unique: true, required: true },
 	},
 	{ timestamps: true }
 );
