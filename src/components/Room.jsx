@@ -17,17 +17,60 @@ function Room(socket) {
   // the dynamic pieces of the URL.
   const { roomName } = useParams();
 
-  const [roomData, setRoomData] = useState({
-    currentQuestion: 'What up dude?',
-    studentAnswer: '',
-    questionType: 'short',
-    multipleChoiceText: [],
-    multipleChoiceCount: [],
-    shortAnswerText: [],
-    studentNames: [],
-    currentStudentName: '',
-    admin: false,
+  // const [roomData, setRoomData] = useState({
+  //   currentQuestion: 'What up dude?',
+  //   studentAnswer: '',
+  //   questionType: 'short',
+  //   multipleChoiceText: [],
+  //   multipleChoiceCount: [],
+  //   shortAnswerText: [],
+  //   studentNames: [],
+  //   currentStudentName: '',
+  //   admin: false,
+  // });
+
+  const [question, setQuestion] = useState('this is the question');
+  const [questionType, setQuestionType] = useState('multiple choice'); //multiple choice or short answer
+  const [mcChoices, setMCChoices] = useState({
+    'A': 'sample choice A',
+    'B': 'sample choice B',
+    'C': 'sample choice C',
+    'D': 'sample choice D'
   });
+
+  const [mcAnswer, setMCAnswer] = useState('');
+
+  const [shortAnswer, setShortAnswer] = useState('');
+
+  const [mcAnswerStats, setMCAnswerStats] = useState({
+    'A': 0,
+    'B': 0,
+    'C': 0,
+    'D': 0
+  });
+
+  const [shortAnswers, setShortAnswers] = useState(
+    [
+      {
+        name: 'student 1',
+        answer: 'sample short answer 1'
+      },
+      {
+        name: 'student 2',
+        answer: 'sample short answer 2'
+      }
+    ]
+  );
+
+  const [roomType, setRoomType] = useState('student') // or student
+
+  const submitQuestion = () => {
+    // do websocket stuff here
+  }
+
+  const submitAnswer = () => {
+    // do websocket stuff here
+  }
 
   // const admin = false; //need to hook this admin boolean up to authentication;
 
@@ -38,8 +81,30 @@ function Room(socket) {
   return (
     <>
       <RoomName>Room Name: {roomName}</RoomName>
-      {roomData.admin ? <TeacherQuestionContainer roomData = { roomData }/> : 
-        <StudentAnswerContainer roomData = { roomData } />}
+      {roomType === 'teacher' ? 
+      <TeacherQuestionContainer
+        // roomData = { roomData } setRoomData = { setRoomData }
+        question = { question } setQuestion = { setQuestion }
+        questionType = { questionType } setQuestionType = { setQuestionType } 
+        mcChoices = { mcChoices } setMCChoices = { setMCChoices }
+        mcAnswer = {mcAnswer} setMCAnswer = { setMCAnswer }
+        shortAnswer = { shortAnswer } setShortAnswer = { setShortAnswer }
+        mcAnswerStats = { mcAnswerStats } setMCAnswerStats = { setMCAnswerStats }
+        shortAnswers = { shortAnswers } setShortAnswers = { setShortAnswers }
+        roomType = {roomType} setRoomType = { setRoomType }
+        submitQuestion = { submitQuestion }
+      /> : 
+      <StudentAnswerContainer
+        // roomData = { roomData } setRoomData = { setRoomData }
+        question = { question } setQuestion = { setQuestion }
+        questionType = { questionType } setQuestionType = { setQuestionType } 
+        mcChoices = { mcChoices } setMCChoices = { setMCChoices }
+        mcAnswer = {mcAnswer} setMCAnswer = { setMCAnswer }
+        shortAnswer = { shortAnswer } setShortAnswer = { setShortAnswer }
+        mcAnswerStats = { mcAnswerStats } setMCAnswerStats = { setMCAnswerStats }
+        shortAnswers = { shortAnswers } setShortAnswers = { setShortAnswers }
+        submitAnswer = { submitAnswer }
+      />}
       <StudentResponsesContainer />
     </>
   );
