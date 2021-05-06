@@ -27,4 +27,20 @@ roomsController.checkRoom = (req, res) => {
 		.catch((err) => res.status(500).json(err));
 };
 
+roomsController.checkRoomAdmin = (req, res) => {
+	const { roomName, adminPassword } = req.body;
+
+	Room.findOne({ roomName })
+		.exec()
+		.then((room) => {
+			// check if user input matches admin password
+			if (adminPassword === room?.adminPassword) {
+				res.status(200).json(room);
+			} else {
+				res.status(404).json({ err: 'No room found by that name!' });
+			}
+		})
+		.catch((err) => res.status(500).json(err));
+};
+
 module.exports = roomsController;
