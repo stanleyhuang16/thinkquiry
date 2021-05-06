@@ -45,9 +45,27 @@ const Home = ({ setSocket }) => {
 		// Keep the reference to socket connection for use in other components
 		setSocket(socket);
 
-		console.log('joinAdmin: ', inputValue);
+		// verify room and admin password in database
+		const checkRoomAdmin = (roomName, adminPassword) => {
+			fetch('/api/checkRoomAdmin', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ roomName, adminPassword }),
+			})
+				.then((res) => res.json())
+				.then(({ roomName }) => {
+					console.log('roomName: ', roomName);
 
-		// do mongoDB stuff..
+					if (roomName) {
+						socket.emit('joinRoom', { roomName });
+						history.push(`/${roomName}`);
+					} else {
+						alert('Invalid room name/password. Please try again.');
+					}
+				})
+				.catch((err) => console.error(err));
+		};
+		checkRoomAdmin(inputValue.input1, inputValue.input2);
 	};
 
 	const handleSubmitCreateRoom = (e, inputValue) => {
