@@ -1,46 +1,51 @@
 import { useState, useEffect } from 'react';
 import styled from "styled-components";
+import { io } from "socket.io-client";
+
+const QuestionDisplay = styled.div`
+border: solid red;
+`;
+
+const ResponseDisplayShort = styled.div`
+border: solid blue;
+`;
+
+const ResponseDisplayMultiple = styled.div`
+border: solid yellow;
+`;
+
+const SubmitButton = styled.button`
+color: violet;
+`;
+
+const AnswerBox = styled.div`
+border: solid green;
+`;
 
 function StudentAnswerContainer(props) {
-  const [questionType, setQuestionType] = useState('');
-  const [multipleChoiceAnswer, setMultipleChoiceAnswer] = useState('');
-  const [shortAnswer, setShortAnswer] = useState('');
-
-  // should move these styled components to a separate file
-  const QuestionDisplay = styled.div`
-    border: solid red;
-  `;
-
-  const ResponseDisplayShort = styled.div`
-    border: solid blue;
-  `;
-
-  const ResponseDisplayMultiple = styled.div`
-    border: solid yellow;
-  `;
-
-  const SubmitButton = styled.button`
-    color: violet;
-  `
+  const {
+    question, setQuestion,
+    questionType, setQuestionType,
+    mcChoices, setMCChoices,
+    mcAnswers, setMCAnswers,
+    mcAnswer, setMCAnswer,
+    shortAnswer, setShortAnswer,
+    shortAnswers, setShortAnswers,
+    roomType, setRoomType,
+    submitAnswer
+  } = props;
 
   function handleChangeMultiple(e) {
-    e.preventDefault();
-    // setMultipleChoiceAnswer(e.target.value);
-  }
-
-  function handleSubmitMultiple(e) {
-    e.preventDefault();
-    // something with emit here, send back to server so it can send to other websockets
+    setMCAnswer(e.target.value);
   }
 
   function handleChangeShort(e) {
     e.preventDefault();
-    // setShortAnswer(e.target.value);
+    setShortAnswer(e.target.value);
   }
 
-  function handleSubmitShort(e) {
-    e.preventDefault();
-    // something with emit here, send back to server so it can send to other websockets
+  function handleSubmitAnswer(e) {
+    submitAnswer();
   }
 
   return (
@@ -48,43 +53,52 @@ function StudentAnswerContainer(props) {
       Student Answer Container
       <QuestionDisplay>
         <h4>Current Question</h4>
-        <h4>{props.roomData.currentQuestion}</h4>
+        <h4>{question}</h4>
       </QuestionDisplay>
-      {props.roomData.questionType === "multiple" ? (
+      {questionType === "multiple choice" ? (
         <ResponseDisplayMultiple>
           <h4>Multiple Choice</h4>
-          <form onSubmit={handleSubmitMultiple}>
+          <form onSubmit={handleSubmitAnswer}>
+            <AnswerBox>
+            {mcChoices['A']}
             <label>
-              <input type='radio' value='A' onChange={handleChangeMultiple}/>A
+              <input type='radio' value='A' checked={mcAnswer === 'A'} onChange={handleChangeMultiple}/>A
             </label>
+            </AnswerBox>
+            <AnswerBox>
+            {mcChoices['B']}
             <label>
-              <input type='radio' value='B' onChange={handleChangeMultiple}/>B
+              <input type='radio' value='B' checked={mcAnswer === 'B'} onChange={handleChangeMultiple}/>B
             </label>
+            </AnswerBox>
+            <AnswerBox>
+            {mcChoices['C']}
             <label>
-              <input type='radio' value='C' onChange={handleChangeMultiple}/>C
+              <input type='radio' value='C' checked={mcAnswer === 'C'} onChange={handleChangeMultiple}/>C
             </label>
+            </AnswerBox>
+            <AnswerBox>
+            {mcChoices['D']}
             <label>
-              <input type='radio' value='D' onChange={handleChangeMultiple}/>D
+              <input type='radio' value='D' checked={mcAnswer === 'D'} onChange={handleChangeMultiple}/>D
             </label>
+            </AnswerBox>
             <input type='submit' value='Submit Multiple Choice Answer'/>
           </form>
         </ResponseDisplayMultiple>
       ) : (
         <ResponseDisplayShort>
           <h4>Short Answer</h4>
-          <form onSubmit={handleSubmitShort}>
+          <form onSubmit={handleSubmitAnswer}>
             <label>
               Enter Answer
-              <input type='text' name='question' onChange={handleChangeShort}>
+              <input type='text' value={shortAnswer} onChange={handleChangeShort}>
               </input>
             </label>
             <input type='submit' value='Submit Short Answer'/>
           </form>
         </ResponseDisplayShort>
       )}
-      <SubmitButton>
-        Submit
-      </SubmitButton>
     </>
   );
 }
