@@ -24,23 +24,34 @@ mongoose.connect(process.env.MONGO_URI, {
 	// options for the connect method to parse the URI
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
+	useCreateIndex: true,
 	// sets the name of the DB that our collections are part of
 	dbName: 'thinkquiry',
 });
 
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 
-app.post('/api/checkRoom', roomsController.checkRoom);
+app.post('/api/checkRoom', roomsController.checkRoom, (req, res) =>
+	res.locals.room
+		? res.status(200).json(res.locals.room)
+		: res.status(404).json({ err: 'Room does not exist! Please try again.' })
+);
 app.post('/api/checkRoomAdmin', roomsController.checkRoomAdmin);
-app.post('/api/createRoom', roomsController.createRoom);
+app.post(
+	'/api/createRoom',
+	roomsController.checkRoom,
+	roomsController.createRoom
+);
 
 // Websockets/Socket.io stuff
 // Whenever a user connects, run this
 io.on('connection', (socket) => {
 	console.log('a user connected');
 
-	socket.on('joinRoom', ({ roomName, adminPassword }) => {
+	socket.on('joinRoom', ({ roomName, adminPassword, personName }) => {
 		console.log("joinRoom's roomName: ", roomName);
+		console.log("joinRoom's adminPassword: ", adminPassword);
+		console.log("joinRoom's personName: ", personName);
 
 		socket.join(`${roomName}`);
 		// send message to that room
@@ -48,14 +59,12 @@ io.on('connection', (socket) => {
 	});
 
 	// Whenever a user disconnects, run this
-	socket.on('disconnect', () => {
-		console.log('a user disconnected');
-	});
+	socket.on('disconnect', () => console.log('a user disconnected'));
 });
 
 // 404 handler
 app.use((req, res) => res.status(404).json({ err: 'Page not found!' }));
 
-server.listen(port, () => {
-	console.log(`Thinkquiry listening at http://localhost:${port}`);
-});
+server.listen(port, () =>
+	console.log(`Thinkquiry listening at http://localhost:${port}`)
+);
