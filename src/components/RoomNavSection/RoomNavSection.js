@@ -23,6 +23,7 @@ import {
 function Pricing() {
   const [inputState, setInputState] = useState({
     joinStudentRoomName: '',
+    joinStudentName: '',
     joinAdminRoomName: '',
     createRoomName: '',
     joinAdminPassword: '',
@@ -38,7 +39,7 @@ function Pricing() {
   };
 
   const handleJoinAsStudent = () => {
-    console.log(inputState.joinStudentRoomName);
+    console.log(inputState.joinStudentRoomName, inputState.joinStudentName);
   };
 
   const handleJoinAsAdmin = () => {
@@ -67,6 +68,13 @@ function Pricing() {
                   name="joinStudentRoomName"
                   placeholder="Room Name"
                   value={inputState.joinStudentRoomName}
+                  onChange={handleChange}
+                />
+                <Input
+                  type="text"
+                  name="joinStudentName"
+                  placeholder="Student Name"
+                  value={inputState.joinStudentName}
                   onChange={handleChange}
                 />
                 <Button onClick={handleJoinAsStudent}>Join Room</Button>

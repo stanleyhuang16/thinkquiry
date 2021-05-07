@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
 import ToggleSwitch from '../components/ToggleSwitch';
 
-  // should move these styled components to a separate file
-  const EnterQuestionShort = styled.div`
-    border: solid blue;
-  `;
+// should move these styled components to a separate file
+const EnterQuestionShort = styled.div`
+  border: solid blue;
+`;
 
-  const EnterQuestionMultiple = styled.div`
-    border: solid yellow;
-  `;
+const EnterQuestionMultiple = styled.div`
+  border: solid yellow;
+`;
 
-  const SubmitButton = styled.button`
-    color: violet;
-  `;
+const SubmitButton = styled.button`
+  color: violet;
+`;
 
-  const NewQuestionButton = styled.button`
+const NewQuestionButton = styled.button`
   color: violet;
 `;
 
@@ -28,7 +28,6 @@ function TeacherQuestionContainer(props) {
   const [multipleC, setMultipleC] = useState('Choice C');
   const [multipleD, setMultipleD] = useState('Choice D');
   const [question, setQuestion] = useState('Insert Question Text Here');
-
   const [editingQuestion, setEditingQuestion] = useState(true);
 
   function handleChangeQuestion(e) {
@@ -41,7 +40,7 @@ function TeacherQuestionContainer(props) {
   }
 
   function handleChangeMultiple(setMultiple, e) {
-    setMultiple(e.target.value)
+    setMultiple(e.target.value);
   }
 
   function handleToggleChange(e) {
@@ -58,37 +57,62 @@ function TeacherQuestionContainer(props) {
   return (
     <>
       Teacher Question Container
-      <div>Short Answer<ToggleSwitch handleToggleChange={handleToggleChange}/>Multiple Choice</div>
+      <div>
+        Short Answer
+        <ToggleSwitch handleToggleChange={handleToggleChange} />
+        Multiple Choice
+      </div>
       Question type: {questionType}
-      {questionType === "multiple choice" ? (
+      {questionType === 'multiple choice' ? (
         <EnterQuestionMultiple>
           <h4>Teacher Enter Multiple Choice</h4>
           <form onSubmit={handleSubmitQuestion}>
-          <label>
+            <label>
               Enter Question
-              <input type='text' name='multipleChoiceQuestion' value={question} onChange={handleChangeQuestion}></input>
+              <input
+                type="text"
+                name="multipleChoiceQuestion"
+                value={question}
+                onChange={handleChangeQuestion}
+              ></input>
             </label>
             <label>
               Enter Choice A
-              <input type='text' name='choiceA' value={multipleA} onChange={(e) => handleChangeMultiple(setMultipleA, e)}>
-              </input>
+              <input
+                type="text"
+                name="choiceA"
+                value={multipleA}
+                onChange={(e) => handleChangeMultiple(setMultipleA, e)}
+              ></input>
             </label>
             <label>
               Enter Choice B
-              <input type='text' name='choiceB' value={multipleB} onChange={(e) => handleChangeMultiple(setMultipleB, e)}>
-              </input>
+              <input
+                type="text"
+                name="choiceB"
+                value={multipleB}
+                onChange={(e) => handleChangeMultiple(setMultipleB, e)}
+              ></input>
             </label>
             <label>
               Enter Choice C
-              <input type='text' name='choiceC' value={multipleC} onChange={(e) => handleChangeMultiple(setMultipleC, e)}>
-              </input>
+              <input
+                type="text"
+                name="choiceC"
+                value={multipleC}
+                onChange={(e) => handleChangeMultiple(setMultipleC, e)}
+              ></input>
             </label>
             <label>
               Enter Choice D
-              <input type='text' name='choiceD' value={multipleD} onChange={(e) => handleChangeMultiple(setMultipleD, e)}>
-              </input>
+              <input
+                type="text"
+                name="choiceD"
+                value={multipleD}
+                onChange={(e) => handleChangeMultiple(setMultipleD, e)}
+              ></input>
             </label>
-            <input type='submit' value='Submit Multiple Choice'/>
+            <input type="submit" value="Submit Multiple Choice" />
           </form>
         </EnterQuestionMultiple>
       ) : (
@@ -97,15 +121,20 @@ function TeacherQuestionContainer(props) {
           <form onSubmit={handleSubmitQuestion}>
             <label>
               Enter Question
-              <input type='text' name='shortQuestion' value={question} onChange={handleChangeQuestion}></input>
+              <input
+                type="text"
+                name="shortQuestion"
+                value={question}
+                onChange={handleChangeQuestion}
+              ></input>
             </label>
-            <input type='submit' value='Submit Short Answer'/>
+            <input type="submit" value="Submit Short Answer" />
           </form>
         </EnterQuestionShort>
       )}
-      {!editingQuestion && <NewQuestionButton>
-        Ask Another Question
-      </NewQuestionButton>}
+      {!editingQuestion && (
+        <NewQuestionButton>Ask Another Question</NewQuestionButton>
+      )}
     </>
   );
 }

@@ -1,62 +1,88 @@
-import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { io } from 'socket.io-client';
-
 import HomeForm from './HomeForm.jsx';
 import { AppContainer } from './Container.style';
-import { Button, ButtonLabel } from './Button.style';
-import { Redirect } from 'react-router';
-
 // save socket and put in app
 const Home = ({ setSocket }) => {
-
+  const history = useHistory();
   const handleSubmitJoinRoom = (e, inputValue) => {
     e.preventDefault();
-
     // Create the socket connection between 3000 and 5000
     const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
-
-    console.log('joinRoom: ', inputValue);
-   
-
-    // do mongoDB stuff..
-
-    // socket.emit('joinRoom', joinRoom);
+    // Check if inputted room exists in database
+    const checkRoom = (roomName, personName) => {
+      if (!personName) personName = 'Anonymous';
+      fetch('/api/checkRoom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomName }),
+      })
+        .then((res) => res.json())
+        .then(({ roomName, err }) => {
+          if (err) return alert(err);
+          if (roomName) {
+            socket.emit('joinRoom', { roomName, personName });
+            history.push(`/${roomName}`);
+          }
+        })
+        .catch((err) => console.error(err));
+    };
+    checkRoom(inputValue.input1, inputValue.input2);
   };
-
   const handleSubmitJoinAdmin = (e, inputValue) => {
     e.preventDefault();
-
     // Create the socket connection between 3000 and 5000
     const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
-
-    console.log('joinAdmin: ', inputValue);
- 
-
-    // do mongoDB stuff..
-
-    // socket.emit('joinAdmin', joinAdmin);
+    // verify room and admin password in database
+    const checkRoomAdmin = (roomName, adminPassword) => {
+      fetch('/api/checkRoomAdmin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomName, adminPassword }),
+      })
+        .then((res) => res.json())
+        .then(({ roomName }) => {
+          console.log('roomName: ', roomName);
+          if (roomName) {
+            socket.emit('joinRoom', { roomName });
+            history.push(`/${roomName}`);
+          } else {
+            alert('Invalid room name/password. Please try again.');
+          }
+        })
+        .catch((err) => console.error(err));
+    };
+    checkRoomAdmin(inputValue.input1, inputValue.input2);
   };
-
   const handleSubmitCreateRoom = (e, inputValue) => {
     e.preventDefault();
-
     // Create the socket connection between 3000 and 5000
     const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
-
-    console.log('createRoom: ', inputValue);
-
-
-    // do mongoDB stuff..
-
-    // socket.emit('createdRoom', createRoom);
+    // Create new active room and store in database
+    const createRoom = (roomName, adminPassword) => {
+      fetch('/api/createRoom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomName, adminPassword }),
+      })
+        .then((res) => res.json())
+        .then(({ roomName, err }) => {
+          if (err) return alert(err);
+          if (roomName) {
+            socket.emit('joinRoom', { roomName, adminPassword });
+            history.push(`/${roomName}`);
+          }
+        })
+        .catch((err) => console.error(err));
+    };
+    createRoom(inputValue.input1, inputValue.input2);
   };
-
   return (
     <AppContainer>
       <div>
@@ -67,35 +93,29 @@ const Home = ({ setSocket }) => {
         <p>Join Room</p>
         <HomeForm
           submitForm={handleSubmitJoinRoom}
-          input1='RoomName'
-          input2='ParticipantName'
-
-          placeholder1='Room'
-          placeholder2='Your Name'
+          input1="RoomName"
+          input2="ParticipantName"
+          placeholder1="Room"
+          placeholder2="Your Name"
         />
         <p>Join Room as Admin</p>
         <HomeForm
           submitForm={handleSubmitJoinAdmin}
-          input1='RoomName'
-          input2='AdminPassword'
-         
-          placeholder1='Room'
-          placeholder2='Admin Password'
+          input1="RoomName"
+          input2="AdminPassword"
+          placeholder1="Room"
+          placeholder2="Admin Password"
         />
         <p>Create Room</p>
         <HomeForm
           submitForm={handleSubmitCreateRoom}
-          input1='RoomName'
-          input2='createAdminPw'
-  
-          placeholder1='Create Room'
-          placeholder2='Create Password'
+          input1="RoomName"
+          input2="createAdminPw"
+          placeholder1="Create Room"
+          placeholder2="Create Password"
         />
       </div>
     </AppContainer>
   );
-
-
 };
-
 export default Home;
