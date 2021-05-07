@@ -20,36 +20,15 @@ import {
   Input,
 } from './RoomNavSection.elements';
 
-function Pricing() {
-  const [inputState, setInputState] = useState({
-    joinStudentRoomName: '',
-    joinStudentName: '',
-    joinAdminRoomName: '',
-    createRoomName: '',
-    joinAdminPassword: '',
-    createPassword: '',
-  });
-
-  const handleChange = (evt) => {
-    const value = evt.target.value;
-    setInputState({
-      ...inputState,
-      [evt.target.name]: value,
-    });
-  };
-
-  const handleJoinAsStudent = () => {
-    console.log(inputState.joinStudentRoomName, inputState.joinStudentName);
-  };
-
-  const handleJoinAsAdmin = () => {
-    console.log(inputState.joinAdminRoomName, inputState.joinAdminPassword);
-  };
-
-  const handleCreateRoom = () => {
-    console.log(inputState.createRoomName, inputState.createPassword);
-  };
-
+function Pricing({
+  inputState,
+  setInputState,
+  handleChange,
+  handleJoinAsStudent,
+  handleJoinAsAdmin,
+  handleCreateRoom,
+}) {
+  console.log(inputState);
   return (
     <IconContext.Provider value={{ color: '#575a89', size: 64 }}>
       <PricingSection>

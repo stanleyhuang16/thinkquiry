@@ -1,44 +1,63 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import StudentAnswerContainer from '../../containers/StudentAnswerContainer';
-import TeacherQuestionContainer from '../../containers/TeacherQuestionContainer';
-import StudentResponsesContainer from '../../containers/StudentResponsesContainer';
 
-import { TeacherQuestionSection } from '../../components';
+import {
+  TeacherQuestionSection,
+  StudentResponsesSection,
+  StudentQuestionSection,
+} from '../../components';
 
-const RoomName = styled.h3`
-  font-size: 3rem;
-`;
+const dummyAnswers = [
+  { participant: 'Paul', answer: 'A' },
+  {
+    participant: 'Christy',
+    answer:
+      'This is an extremely long answer. This is an extremely long answer. This is an extremely long answer.',
+  },
+  { participant: 'Nhan', answer: 'C' },
+  { participant: 'Nhan2', answer: 'D' },
+  { participant: 'Nhan3', answer: 'D' },
+  { participant: 'Paul', answer: 'A' },
+];
+
 function Room({ socket }) {
   console.log('socket', socket);
-  // We can use the `useParams` hook here to access
-  // the dynamic pieces of the URL.
+
+  const [admin, setAdmin] = useState(false);
   const { roomName } = useParams();
-  const [roomData, setRoomData] = useState({
-    currentQuestion: 'What up dude?',
-    studentAnswer: '',
-    questionType: 'short',
-    multipleChoiceText: [],
-    multipleChoiceCount: [],
-    shortAnswerText: [],
-    studentNames: [],
-    currentStudentName: '',
-    admin: true,
+  const [studentAnswers, setStudentAnswers] = useState({});
+  const [studentQuestionData, setStudentQuestionData] = useState({
+    currentQuestion: 'How much wood can a woodchuck chuck?',
+    questionType: 'multiple choice',
+    multipleChoiceText: ['Choice A', 'Choice B', 'Choice C', 'Choice D'],
+    currentStudentName: 'Test Student Name',
   });
-  // const admin = false; //need to hook this admin boolean up to authentication;
-  // socket.on('hi', ({ test }) => {
-  // 	console.log('in hi: ', test);
-  // });
+
+  /*
+  Websocket stuff here to listen for question data and set it. 
+    //use setStudentQuestionData
+
+
+  Websocket stuff here to listen for student responses and set it.
+    //use setStudentAnswers. {participant, answer}
+  */
+
   return (
     <>
-      <TeacherQuestionSection roomName={roomName} />
-      {roomData.admin ? (
-        <TeacherQuestionContainer roomData={roomData} />
+      {admin ? (
+        <>
+          <TeacherQuestionSection roomName={roomName} />
+          <StudentResponsesSection studentResponses={dummyAnswers} />
+        </>
       ) : (
-        <StudentAnswerContainer roomData={roomData} />
+        <>
+          <StudentQuestionSection
+            roomName={roomName}
+            studentQuestionData={studentQuestionData}
+          />
+        </>
       )}
-      <StudentResponsesContainer />
     </>
   );
 }

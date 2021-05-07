@@ -75,7 +75,7 @@ function TeacherQuestionSection({ roomName }) {
             <PricingCard>
               <PricingCardInfo>
                 <PricingCardIcon>
-                  <SiGooglescholar />
+                  <FaChalkboardTeacher />
                 </PricingCardIcon>
                 <PricingCardCost>Teacher Dashboard</PricingCardCost>
                 <ToggleContainer>
