@@ -20,7 +20,7 @@ roomsController.checkRoomAdmin = (req, res) => {
 	Room.findOne({ roomName })
 		.exec()
 		.then((room) =>
-			adminPassword === room?.adminPassword
+			adminPassword === room.adminPassword
 				? res.status(200).json(room)
 				: res.json({ err: 'Invalid room name/password! Please try again.' })
 		)

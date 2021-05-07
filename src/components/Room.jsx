@@ -37,19 +37,19 @@ function Room({ socket }) {
 	const [shortAnswer, setShortAnswer] = useState('');
 
 	const [shortAnswers, setShortAnswers] = useState([
-		{
-			name: 'student 1',
-			answer: 'sample short answer 1',
-		},
-		{
-			name: 'student 2',
-			answer: 'sample short answer 2',
-		},
+		// array of strings
+    'sample of student short answer',
 	]);
 
 	const [adminPassword, setAdminPassword] = useState(false);
 
 	const submitQuestion = () => {
+    setQuestion(question);
+
+    if (questionType === 'multiple choice') {
+      setMCChoices(mcChoices);
+    }
+
 		// do websocket stuff here
 		socket.emit('questionSubmitted', {
 			roomName,
@@ -65,6 +65,12 @@ function Room({ socket }) {
 			newState[mcAnswer]++;
 			setMCAnswerStats(newState);
 		}
+
+    if (questionType === 'short answer') {
+      let newState = [...shortAnswers];
+      newState.push(shortAnswer);
+      setShortAnswers(newState);
+    }
 
 		// do websocket stuff here
 		socket.emit('answerSubmitted', {
