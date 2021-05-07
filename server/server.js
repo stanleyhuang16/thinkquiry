@@ -7,62 +7,97 @@ require('dotenv').config();
 const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
-  cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-  },
+	cors: {
+		origin: 'http://localhost:3000',
+		methods: ['GET', 'POST'],
+	},
 });
 
 const port = 5000;
+const roomsController = require('./controllers/roomsController');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+mongoose.connect(process.env.MONGO_URI, {
+	// options for the connect method to parse the URI
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true,
+	// sets the name of the DB that our collections are part of
+	dbName: 'thinkquiry',
 });
 
-console.log('MONGO_URI:', process.env.MONGO_URI);
+mongoose.connection.once('open', () => console.log('Connected to MongoDB'));
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    // options for the connect method to parse the URI
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // sets the name of the DB that our collections are part of
-    dbName: 'thinkquiry',
-  })
-  .then(() => console.log('Connected to Mongo DB.'))
-  .catch((err) => console.log(err));
-
-mongoose.connection.once('open', () => {
-  console.log('Connected to Database');
-});
+app.post('/api/checkRoom', roomsController.checkRoom, (req, res) =>
+	res.locals.room
+		? res.status(200).json(res.locals.room)
+		: res.json({ err: 'Room does not exist! Please try again.' })
+);
+app.post('/api/checkRoomAdmin', roomsController.checkRoomAdmin);
+app.post(
+	'/api/createRoom',
+	roomsController.checkRoom,
+	roomsController.createRoom
+);
 
 // Websockets/Socket.io stuff
-// Whenever a user connects, run this
 io.on('connection', (socket) => {
-  console.log('a user connected');
+	console.log('a user connected');
 
-  socket.on('validRoom', ({ room, name }) => {
-    console.log('in validRoom!');
+	socket.on(
+		'validInputs',
+		({ roomName, adminPassword, personName }) => {
 
-    console.log("validRoom's room: ", room);
-    console.log("validRoom's name: ", name);
+			socket.join(`${roomName}`);
+			io.to(roomName).emit('joinRoom', {
+				roomName,
+				adminPassword,
+				personName,
+			});
+		}
+	);
 
-    socket.emit('joinRoom', 'lala');
-  });
+	socket.on(
+		'questionSubmitted',
+		({ roomName, question, questionType, mcChoices }) => {
+			io.to(roomName).emit('questionSentToAll', {
+				roomName,
+				question,
+				questionType,
+				mcChoices,
+			});
+		}
+	);
 
-  // Whenever a user disconnects, run this
-  socket.on('disconnect', () => {
-    console.log('a user disconnected');
-  });
+	socket.on(
+		'answerSubmitted',
+		({ roomName, question, mcChoices, mcAnswerStats, adminPassword }) => {
+			io.to(roomName).emit('answerSentToAll', {
+				roomName,
+				question,
+				mcChoices,
+				mcAnswerStats,
+			});
+
+			// WIP: broadcast to just admin
+			// socket.broadcast.to(adminSocketId).emit('answerSentToTeacher', {
+			// 	roomName,
+			// 	question,
+			// 	mcChoices,
+			// 	mcAnswerStats,
+			// });
+		}
+	);
+
+	socket.on('disconnect', () => console.log('a user disconnected'));
 });
 
 // 404 handler
 app.use((req, res) => res.status(404).json({ err: 'Page not found!' }));
 
-server.listen(port, () => {
-  console.log(`Thinkquiry listening at http://localhost:${port}`);
-});
+server.listen(port, () =>
+	console.log(`Thinkquiry listening at http://localhost:${port}`)
+);
