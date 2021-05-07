@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +13,6 @@ const RoomName = styled.h3`
 
 function Room({ socket }) {
 	// We can use the `useParams` hook here to access
-
 	// the dynamic pieces of the URL.
 	const { roomName } = useParams();
 
@@ -28,14 +27,14 @@ function Room({ socket }) {
 
 	const [mcAnswer, setMCAnswer] = useState('');
 
-	const [shortAnswer, setShortAnswer] = useState('');
-
 	const [mcAnswerStats, setMCAnswerStats] = useState({
 		A: 0,
 		B: 0,
 		C: 0,
 		D: 0,
 	});
+
+	const [shortAnswer, setShortAnswer] = useState('');
 
 	const [shortAnswers, setShortAnswers] = useState([
 		{
@@ -48,26 +47,59 @@ function Room({ socket }) {
 		},
 	]);
 
-	const [roomType, setRoomType] = useState('teacher'); // teacher or student
+	const [adminPassword, setAdminPassword] = useState(false);
 
 	const submitQuestion = () => {
 		// do websocket stuff here
+		socket.emit('questionSubmitted', {
+			roomName,
+			question,
+			questionType,
+			mcChoices,
+		});
 	};
 
 	const submitAnswer = () => {
+		if (questionType === 'multiple choice') {
+			let newState = { ...mcAnswerStats };
+			newState[mcAnswer]++;
+			setMCAnswerStats(newState);
+		}
+
 		// do websocket stuff here
+		socket.emit('answerSubmitted', {
+			roomName,
+			question,
+			mcChoices,
+			mcAnswerStats,
+			adminPassword,
+		});
 	};
 
 	socket.on('joinRoom', ({ roomName, adminPassword, personName }) => {
-		console.log("joinRoom's roomName: ", roomName);
-		console.log("joinRoom's adminPassword: ", adminPassword);
-		console.log("joinRoom's personName: ", personName);
+		if (adminPassword) setAdminPassword(true);
 	});
+
+	socket.on(
+		'questionSentToAll',
+		({ roomName, question, questionType, mcChoices }) => {
+			setQuestion(question);
+			setQuestionType(questionType);
+			setMCChoices(mcChoices);
+		}
+	);
+
+	socket.on(
+		'answerSentToAll',
+		({ roomName, question, mcChoices, mcAnswerStats }) => {
+			console.log('in answerSentToAll');
+		}
+	);
 
 	return (
 		<>
 			<RoomName>Room Name: {roomName}</RoomName>
-			{roomType === 'teacher' ? (
+			{adminPassword ? (
 				<TeacherQuestionContainer
 					question={question}
 					setQuestion={setQuestion}
@@ -83,8 +115,6 @@ function Room({ socket }) {
 					setMCAnswerStats={setMCAnswerStats}
 					shortAnswers={shortAnswers}
 					setShortAnswers={setShortAnswers}
-					roomType={roomType}
-					setRoomType={setRoomType}
 					submitQuestion={submitQuestion}
 				/>
 			) : (
