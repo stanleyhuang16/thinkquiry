@@ -47,14 +47,50 @@ app.post(
 io.on('connection', (socket) => {
 	console.log('a user connected');
 
-	socket.on('validInputs', ({ roomName, adminPassword, personName }) => {
-		console.log("validInputs' roomName: ", roomName);
-		console.log("validInputs' adminPassword: ", adminPassword);
-		console.log("validInputs' personName: ", personName);
+	socket.on(
+		'validInputs',
+		({ roomName, adminPassword, personName }) => {
 
-		socket.join(`${roomName}`);
-		io.to(roomName).emit('joinRoom', { roomName, adminPassword, personName });
-	});
+			socket.join(`${roomName}`);
+			io.to(roomName).emit('joinRoom', {
+				roomName,
+				adminPassword,
+				personName,
+			});
+		}
+	);
+
+	socket.on(
+		'questionSubmitted',
+		({ roomName, question, questionType, mcChoices }) => {
+			io.to(roomName).emit('questionSentToAll', {
+				roomName,
+				question,
+				questionType,
+				mcChoices,
+			});
+		}
+	);
+
+	socket.on(
+		'answerSubmitted',
+		({ roomName, question, mcChoices, mcAnswerStats, adminPassword }) => {
+			io.to(roomName).emit('answerSentToAll', {
+				roomName,
+				question,
+				mcChoices,
+				mcAnswerStats,
+			});
+
+			// WIP: broadcast to just admin
+			// socket.broadcast.to(adminSocketId).emit('answerSentToTeacher', {
+			// 	roomName,
+			// 	question,
+			// 	mcChoices,
+			// 	mcAnswerStats,
+			// });
+		}
+	);
 
 	socket.on('disconnect', () => console.log('a user disconnected'));
 });
