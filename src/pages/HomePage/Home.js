@@ -26,7 +26,7 @@ const Home = ({ setSocket }) => {
 
   const handleJoinAsStudent = () => {
     // Create the socket connection between 3000 and 5000
-    const socket = io('http://localhost:5000');
+    const socket = io();
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
@@ -60,7 +60,7 @@ const Home = ({ setSocket }) => {
 
   const handleJoinAsAdmin = () => {
     // Create the socket connection between 3000 and 5000
-    const socket = io('http://localhost:5000');
+    const socket = io();
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
@@ -91,7 +91,7 @@ const Home = ({ setSocket }) => {
 
   const handleCreateRoom = () => {
     // Create the socket connection between 3000 and 5000
-    const socket = io('http://localhost:5000');
+    const socket = io();
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
