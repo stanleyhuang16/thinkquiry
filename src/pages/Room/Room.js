@@ -37,10 +37,15 @@ function Room({ socket }) {
   /* Websockets
    */
 
-  socket.on('joinRoom', ({ roomName, adminPassword, studentName }) => {
-    if (adminPassword) setAdminPassword(true);
-    if (studentName) setStudentName(studentName);
-  });
+  socket.on(
+    'joinRoom',
+    ({ roomName, adminPassword, studentNameFromServer }) => {
+      if (adminPassword) setAdminPassword(true);
+      if (studentNameFromServer) {
+        setStudentName(studentNameFromServer);
+      }
+    }
+  );
 
   //Websocket stuff here to listen for question data and set it.
   //use setStudentQuestionData
@@ -63,11 +68,21 @@ function Room({ socket }) {
 
   socket.on(
     'answerSentToAll',
-    ({ roomName, question, mcChoices, mcAnswerStats, studentAnswer }) => {
+    ({
+      roomName,
+      question,
+      mcChoices,
+      mcAnswerStats,
+      studentAnswer,
+      studentNameFromServer,
+    }) => {
       //studentAnswer is just a single object with {participant, answer}
 
       const newStudentResponses = [...studentResponses];
-      newStudentResponses.push({ participant: studentName, studentAnswer });
+      newStudentResponses.push({
+        participant: studentNameFromServer,
+        studentAnswer,
+      });
       setStudentResponses(newStudentResponses);
     }
   );

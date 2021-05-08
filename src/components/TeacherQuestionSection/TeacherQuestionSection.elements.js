@@ -47,7 +47,7 @@ export const PricingCard = styled.div`
   background: #ffefd5;
   box-shadow: 0 6px 20px rgba(56, 125, 255, 0.2);
   width: 700px;
-  height: 500px;
+  height: 530px;
   text-decoration: none;
   border-radius: 4px;
 
@@ -67,6 +67,7 @@ export const PricingCard = styled.div`
 export const PricingCardInfo = styled.div`
   display: flex;
   flex-direction: column;
+  word-wrap: break-word;
   height: 500px;
   padding: 24px;
   align-items: center;
@@ -160,7 +161,7 @@ export const MultipleChoiceContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 300px;
-  padding: 15px;
+  padding: 10px;
   align-items: left;
   color: black;
 `;
@@ -181,4 +182,11 @@ export const MultipleChoiceInput = styled.input`
   @media screen and (max-width: 960px) {
     width: 100%;
   }
+`;
+
+export const StudentQuestionText = styled.h4`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #414a4c;
 `;

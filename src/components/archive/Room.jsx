@@ -91,9 +91,7 @@ function Room({ socket }) {
 
   socket.on(
     'answerSentToAll',
-    ({ roomName, question, mcChoices, mcAnswerStats }) => {
-      console.log('in answerSentToAll');
-    }
+    ({ roomName, question, mcChoices, mcAnswerStats }) => {}
   );
 
   return (
