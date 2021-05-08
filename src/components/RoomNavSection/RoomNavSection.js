@@ -28,7 +28,6 @@ function Pricing({
   handleJoinAsAdmin,
   handleCreateRoom,
 }) {
-  console.log(inputState);
   return (
     <IconContext.Provider value={{ color: '#575a89', size: 64 }}>
       <PricingSection>

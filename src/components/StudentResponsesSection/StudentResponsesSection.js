@@ -39,7 +39,7 @@ function StudentResponsesSection({ studentResponses }) {
     .map((obj) => {
       return (
         <li>
-          {obj.participant}: {obj.answer}
+          {obj.participant}: {obj.studentAnswer}
         </li>
       );
     });
@@ -57,7 +57,6 @@ function StudentResponsesSection({ studentResponses }) {
                   <SiGooglescholar />
                 </PricingCardIcon>
                 <PricingCardCost>Student Responses</PricingCardCost>
-
                 <Table>
                   <thead>
                     <tr>

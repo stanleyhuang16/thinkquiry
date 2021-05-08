@@ -22,44 +22,77 @@ const dummyAnswers = [
 ];
 
 function Room({ socket }) {
-  console.log('socket', socket);
-  const [admin, setAdmin] = useState(true);
   const [adminPassword, setAdminPassword] = useState(false);
 
-  // socket.on('joinRoom', ({ roomName, adminPassword, personName }) => {
-  //   if (adminPassword) setAdminPassword(true);
-  // });
-
   const { roomName } = useParams();
-  const [studentAnswers, setStudentAnswers] = useState({});
+  const [studentResponses, setStudentResponses] = useState([]);
+
+  const [studentName, setStudentName] = useState('Anonymous');
   const [studentQuestionData, setStudentQuestionData] = useState({
     currentQuestion: 'Waiting for next question...',
     questionType: 'multiple choice',
     multipleChoiceText: ['Choice A', 'Choice B', 'Choice C', 'Choice D'],
-    currentStudentName: 'Test Student Name',
   });
 
+  /* Websockets
+   */
+
+  socket.on('joinRoom', ({ roomName, adminPassword, studentName }) => {
+    if (adminPassword) setAdminPassword(true);
+    if (studentName) setStudentName(studentName);
+  });
+
+  //Websocket stuff here to listen for question data and set it.
+  //use setStudentQuestionData
+
+  socket.on(
+    'questionSentToAll',
+    ({ roomName, question, questionType, mcChoices }) => {
+      setStudentQuestionData({
+        currentQuestion: question,
+        questionType,
+        multipleChoiceText: mcChoices,
+      });
+    }
+  );
+
   /*
-  Websocket stuff here to listen for question data and set it. 
-    //use setStudentQuestionData
-
-
   Websocket stuff here to listen for student responses and set it.
     //use setStudentAnswers. {participant, answer}
   */
 
+  socket.on(
+    'answerSentToAll',
+    ({ roomName, question, mcChoices, mcAnswerStats, studentAnswer }) => {
+      //studentAnswer is just a single object with {participant, answer}
+
+      const newStudentResponses = [...studentResponses];
+      newStudentResponses.push({ participant: studentName, studentAnswer });
+      setStudentResponses(newStudentResponses);
+    }
+  );
+
   return (
     <>
-      {admin ? (
+      {adminPassword ? (
         <>
-          <TeacherQuestionSection roomName={roomName} />
-          <StudentResponsesSection studentResponses={dummyAnswers} />
+          <TeacherQuestionSection
+            roomName={roomName}
+            socket={socket}
+            setStudentResponses={setStudentResponses}
+          />
+          <StudentResponsesSection
+            roomName={roomName}
+            studentResponses={studentResponses}
+          />
         </>
       ) : (
         <>
           <StudentQuestionSection
             roomName={roomName}
             studentQuestionData={studentQuestionData}
+            studentName={studentName}
+            socket={socket}
           />
         </>
       )}

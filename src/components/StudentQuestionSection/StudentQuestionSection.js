@@ -19,7 +19,12 @@ import {
   RadioButton,
 } from './StudentQuestionSection.elements';
 
-function StudentQuestionSection({ roomName, studentQuestionData }) {
+function StudentQuestionSection({
+  roomName,
+  studentQuestionData,
+  studentName,
+  socket,
+}) {
   const [shortAnswer, setShortAnswer] = useState('');
   const [editingAnswer, setEditingAnswer] = useState(true);
   const [select, setSelect] = useState('optionA');
@@ -35,9 +40,19 @@ function StudentQuestionSection({ roomName, studentQuestionData }) {
     //INSERT WEBSOCKET SENDING HERE
 
     if (studentQuestionData.questionType === 'multiple choice') {
-      console.log(studentQuestionData.currentStudentName, select);
+      socket.emit('answerSubmitted', {
+        roomName,
+        studentName,
+        studentAnswer: select,
+        question: studentQuestionData.currentQuestion,
+      });
     } else {
-      console.log(studentQuestionData.currentStudentName, shortAnswer);
+      socket.emit('answerSubmitted', {
+        roomName,
+        studentName,
+        studentAnswer: shortAnswer,
+        question: studentQuestionData.currentQuestion,
+      });
     }
   }
 
@@ -71,8 +86,8 @@ function StudentQuestionSection({ roomName, studentQuestionData }) {
                       <RadioButton
                         type="radio"
                         name="radio"
-                        value="optionA"
-                        checked={select === 'optionA'}
+                        value="A"
+                        checked={select === 'A'}
                         onChange={(event) => handleSelectChange(event)}
                       />
                       <RadioButtonLabel />
@@ -82,8 +97,8 @@ function StudentQuestionSection({ roomName, studentQuestionData }) {
                       <RadioButton
                         type="radio"
                         name="radio"
-                        value="optionB"
-                        checked={select === 'optionB'}
+                        value="B"
+                        checked={select === 'B'}
                         onChange={(event) => handleSelectChange(event)}
                       />
                       <RadioButtonLabel />
@@ -93,8 +108,8 @@ function StudentQuestionSection({ roomName, studentQuestionData }) {
                       <RadioButton
                         type="radio"
                         name="radio"
-                        value="optionC"
-                        checked={select === 'optionC'}
+                        value="C"
+                        checked={select === 'C'}
                         onChange={(event) => handleSelectChange(event)}
                       />
                       <RadioButtonLabel />
@@ -104,8 +119,8 @@ function StudentQuestionSection({ roomName, studentQuestionData }) {
                       <RadioButton
                         type="radio"
                         name="radio"
-                        value="optionD"
-                        checked={select === 'optionD'}
+                        value="D"
+                        checked={select === 'D'}
                         onChange={(event) => handleSelectChange(event)}
                       />
                       <RadioButtonLabel />

@@ -17,7 +17,6 @@ const Home = ({ setSocket }) => {
   });
 
   const handleChange = (evt) => {
-    console.log('here');
     const value = evt.target.value;
     setInputState({
       ...inputState,
@@ -26,19 +25,17 @@ const Home = ({ setSocket }) => {
   };
 
   const handleJoinAsStudent = () => {
-    console.log(inputState.joinStudentRoomName, inputState.joinStudentName);
-
     // Create the socket connection between 3000 and 5000
     const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
     // Check if inputted room exists in database
-    const checkRoom = (roomName, personName) => {
+    const checkRoom = (roomName, studentName) => {
       if (!roomName) return alert('Please input a valid room name.');
       if (roomName.includes('/'))
         return alert('Room names cannot include "/". Please try again.');
-      if (!personName) personName = 'Anonymous';
+      if (!studentName) studentName = 'Anonymous';
 
       fetch('/api/checkRoom', {
         method: 'POST',
@@ -50,7 +47,7 @@ const Home = ({ setSocket }) => {
           if (err) return alert(err);
 
           if (roomName) {
-            socket.emit('validInputs', { roomName, personName });
+            socket.emit('validInputs', { roomName, studentName });
             history.push(`/${roomName}`);
           }
         })
@@ -60,8 +57,6 @@ const Home = ({ setSocket }) => {
   };
 
   const handleJoinAsAdmin = () => {
-    console.log(inputState.joinAdminRoomName, inputState.joinAdminPassword);
-
     // Create the socket connection between 3000 and 5000
     const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
@@ -93,8 +88,6 @@ const Home = ({ setSocket }) => {
   };
 
   const handleCreateRoom = () => {
-    console.log(inputState.createRoomName, inputState.createPassword);
-
     // Create the socket connection between 3000 and 5000
     const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components

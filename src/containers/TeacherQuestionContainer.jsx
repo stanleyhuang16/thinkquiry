@@ -22,7 +22,6 @@ const NewQuestionButton = styled.button`
 `;
 
 function TeacherQuestionContainer(props) {
-  // console.log(props);
   const {
     question,
     setQuestion,

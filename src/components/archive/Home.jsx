@@ -16,11 +16,11 @@ const Home = ({ setSocket }) => {
     setSocket(socket);
 
     // Check if inputted room exists in database
-    const checkRoom = (roomName, personName) => {
+    const checkRoom = (roomName, studentName) => {
       if (!roomName) return alert('Please input a valid room name.');
       if (roomName.includes('/'))
         return alert('Room names cannot include "/". Please try again.');
-      if (!personName) personName = 'Anonymous';
+      if (!studentName) studentName = 'Anonymous';
 
       fetch('/api/checkRoom', {
         method: 'POST',
@@ -32,7 +32,7 @@ const Home = ({ setSocket }) => {
           if (err) return alert(err);
 
           if (roomName) {
-            socket.emit('validInputs', { roomName, personName });
+            socket.emit('validInputs', { roomName, studentName });
             history.push(`/${roomName}`);
           }
         })

@@ -28,21 +28,28 @@ import {
   MultipleChoiceInput,
 } from './TeacherQuestionSection.elements';
 
-function TeacherQuestionSection({ roomName }) {
+function TeacherQuestionSection({ socket, roomName, setStudentResponses }) {
   const [questionType, setQuestionType] = useState('short answer');
-  const [multipleA, setMultipleA] = useState('Choice A');
-  const [multipleB, setMultipleB] = useState('Choice B');
-  const [multipleC, setMultipleC] = useState('Choice C');
-  const [multipleD, setMultipleD] = useState('Choice D');
+  const [multipleA, setMultipleA] = useState('A');
+  const [multipleB, setMultipleB] = useState('B');
+  const [multipleC, setMultipleC] = useState('C');
+  const [multipleD, setMultipleD] = useState('D');
   const [question, setQuestion] = useState('');
   const [editingQuestion, setEditingQuestion] = useState(true);
 
   function handleSubmitQuestion(e) {
     e.preventDefault();
-    console.log(question);
+
     setEditingQuestion(false);
 
     //send all the state via websocket here. QuestionType, question, and multiple choice array if applicable.
+
+    socket.emit('questionSubmitted', {
+      roomName,
+      question,
+      questionType,
+      mcChoices: [multipleA, multipleB, multipleC, multipleD],
+    });
   }
 
   function handleChangeQuestion(e) {
@@ -56,6 +63,7 @@ function TeacherQuestionSection({ roomName }) {
   function handleAskAnotherQuestion() {
     setQuestion('');
     setEditingQuestion(true);
+    setStudentResponses([]);
   }
 
   function handleToggleChange(e) {
