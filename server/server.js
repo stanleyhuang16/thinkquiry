@@ -50,13 +50,15 @@ io.on('connection', (socket) => {
   socket.on('validInputs', ({ roomName, adminPassword, studentName }) => {
     socket.join(`${roomName}`);
 
+    const clientId = socket.id;
+
     if (adminPassword) {
-      io.to(roomName).emit('joinRoom', {
+      io.to(clientId).emit('joinRoom', {
         roomName,
         adminPassword,
       });
     } else {
-      io.to(roomName).emit('joinRoom', {
+      io.to(clientId).emit('joinRoom', {
         roomName,
         studentName,
       });
