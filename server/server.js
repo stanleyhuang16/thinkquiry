@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
     } else {
       io.to(clientId).emit('joinRoom', {
         roomName,
-        studentName,
+        studentNameFromServer: studentName,
       });
     }
   });
@@ -83,13 +83,21 @@ io.on('connection', (socket) => {
 
   socket.on(
     'answerSubmitted',
-    ({ roomName, question, mcChoices, mcAnswerStats, studentAnswer }) => {
+    ({
+      roomName,
+      question,
+      mcChoices,
+      mcAnswerStats,
+      studentAnswer,
+      studentName,
+    }) => {
       io.to(roomName).emit('answerSentToAll', {
         roomName,
         question,
         mcChoices,
         mcAnswerStats,
         studentAnswer,
+        studentNameFromServer: studentName,
       });
     }
   );

@@ -30,7 +30,7 @@ function Pricing({
 }) {
   return (
     <IconContext.Provider value={{ color: '#575a89', size: 64 }}>
-      <PricingSection>
+      <PricingSection id="roomNav">
         <PricingWrapper>
           <PricingHeading>Join or Create a Room</PricingHeading>
           <PricingContainer>

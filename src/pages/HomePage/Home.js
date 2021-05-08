@@ -26,7 +26,7 @@ const Home = ({ setSocket }) => {
 
   const handleJoinAsStudent = () => {
     // Create the socket connection between 3000 and 5000
-    const socket = io();
+    const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
@@ -35,7 +35,9 @@ const Home = ({ setSocket }) => {
       if (!roomName) return alert('Please input a valid room name.');
       if (roomName.includes('/'))
         return alert('Room names cannot include "/". Please try again.');
-      if (!studentName) studentName = 'Anonymous';
+      if (!studentName) {
+        studentName = 'Anonymous';
+      }
 
       fetch('/api/checkRoom', {
         method: 'POST',
@@ -58,7 +60,7 @@ const Home = ({ setSocket }) => {
 
   const handleJoinAsAdmin = () => {
     // Create the socket connection between 3000 and 5000
-    const socket = io();
+    const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 
@@ -89,7 +91,7 @@ const Home = ({ setSocket }) => {
 
   const handleCreateRoom = () => {
     // Create the socket connection between 3000 and 5000
-    const socket = io();
+    const socket = io('http://localhost:5000');
     // Keep the reference to socket connection for use in other components
     setSocket(socket);
 

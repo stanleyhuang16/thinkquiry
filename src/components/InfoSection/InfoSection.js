@@ -27,6 +27,10 @@ const InfoSection = ({
   alt,
   start,
 }) => {
+  const handleScroll = () => {
+    document.getElementById('roomNav').scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
       <InfoSec lightBg={lightBg}>
@@ -37,11 +41,9 @@ const InfoSection = ({
                 <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
                 <Heading lightText={lightText}>{headline}</Heading>
                 <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
-                <Link to="/sign-up">
-                  <Button big fontBig primary={primary}>
-                    {buttonLabel}
-                  </Button>
-                </Link>
+                <Button big fontBig primary={primary} onClick={handleScroll}>
+                  {buttonLabel}
+                </Button>
               </TextWrapper>
             </InfoColumn>
             <InfoColumn>
