@@ -23,12 +23,17 @@ const dummyAnswers = [
 
 function Room({ socket }) {
   console.log('socket', socket);
+  const [admin, setAdmin] = useState(true);
+  const [adminPassword, setAdminPassword] = useState(false);
 
-  const [admin, setAdmin] = useState(false);
+  // socket.on('joinRoom', ({ roomName, adminPassword, personName }) => {
+  //   if (adminPassword) setAdminPassword(true);
+  // });
+
   const { roomName } = useParams();
   const [studentAnswers, setStudentAnswers] = useState({});
   const [studentQuestionData, setStudentQuestionData] = useState({
-    currentQuestion: 'How much wood can a woodchuck chuck?',
+    currentQuestion: 'Waiting for next question...',
     questionType: 'multiple choice',
     multipleChoiceText: ['Choice A', 'Choice B', 'Choice C', 'Choice D'],
     currentStudentName: 'Test Student Name',

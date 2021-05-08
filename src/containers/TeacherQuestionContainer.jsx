@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 import ToggleSwitch from '../components/ToggleSwitch';
 
@@ -22,36 +22,64 @@ const NewQuestionButton = styled.button`
 `;
 
 function TeacherQuestionContainer(props) {
-  const [questionType, setQuestionType] = useState('short answer');
-  const [multipleA, setMultipleA] = useState('Choice A');
-  const [multipleB, setMultipleB] = useState('Choice B');
-  const [multipleC, setMultipleC] = useState('Choice C');
-  const [multipleD, setMultipleD] = useState('Choice D');
-  const [question, setQuestion] = useState('Insert Question Text Here');
+  // console.log(props);
+  const {
+    question,
+    setQuestion,
+    questionType,
+    setQuestionType,
+    mcChoices,
+    setMCChoices,
+    mcAnswers,
+    setMCAnswers,
+    shortAnswers,
+    setShortAnswers,
+    roomType,
+    setRoomType,
+    submitQuestion,
+  } = props;
+
   const [editingQuestion, setEditingQuestion] = useState(true);
 
   function handleChangeQuestion(e) {
     setQuestion(e.target.value);
   }
 
+  function handleChangeMultiple(choice, e) {
+    if (choice === 'A') {
+      const newState = { ...mcChoices };
+      newState['A'] = e.target.value;
+      setMCChoices(newState);
+    }
+    if (choice === 'B') {
+      const newState = { ...mcChoices };
+      newState['B'] = e.target.value;
+      setMCChoices(newState);
+    }
+    if (choice === 'C') {
+      const newState = { ...mcChoices };
+      newState['C'] = e.target.value;
+      setMCChoices(newState);
+    }
+    if (choice === 'D') {
+      const newState = { ...mcChoices };
+      newState['D'] = e.target.value;
+      setMCChoices(newState);
+    }
+  }
+
   function handleSubmitQuestion(e) {
     e.preventDefault();
     setEditingQuestion(false);
-  }
-
-  function handleChangeMultiple(setMultiple, e) {
-    setMultiple(e.target.value);
+    submitQuestion();
   }
 
   function handleToggleChange(e) {
-    // e.preventDefault();
-    console.log('handled toggle change');
     if (questionType === 'short answer') {
       setQuestionType('multiple choice');
     } else if (questionType === 'multiple choice') {
       setQuestionType('short answer');
     }
-    console.log('state is currently :', questionType);
   }
 
   return (
@@ -80,36 +108,36 @@ function TeacherQuestionContainer(props) {
               Enter Choice A
               <input
                 type="text"
-                name="choiceA"
-                value={multipleA}
-                onChange={(e) => handleChangeMultiple(setMultipleA, e)}
+                name="A"
+                value={mcChoices['A']}
+                onChange={(e) => handleChangeMultiple('A', e)}
               ></input>
             </label>
             <label>
               Enter Choice B
               <input
                 type="text"
-                name="choiceB"
-                value={multipleB}
-                onChange={(e) => handleChangeMultiple(setMultipleB, e)}
+                name="B"
+                value={mcChoices['B']}
+                onChange={(e) => handleChangeMultiple('B', e)}
               ></input>
             </label>
             <label>
               Enter Choice C
               <input
                 type="text"
-                name="choiceC"
-                value={multipleC}
-                onChange={(e) => handleChangeMultiple(setMultipleC, e)}
+                name="C"
+                value={mcChoices['C']}
+                onChange={(e) => handleChangeMultiple('C', e)}
               ></input>
             </label>
             <label>
               Enter Choice D
               <input
                 type="text"
-                name="choiceD"
-                value={multipleD}
-                onChange={(e) => handleChangeMultiple(setMultipleD, e)}
+                name="D"
+                value={mcChoices['D']}
+                onChange={(e) => handleChangeMultiple('D', e)}
               ></input>
             </label>
             <input type="submit" value="Submit Multiple Choice" />
@@ -128,7 +156,7 @@ function TeacherQuestionContainer(props) {
                 onChange={handleChangeQuestion}
               ></input>
             </label>
-            <input type="submit" value="Submit Short Answer" />
+            <input type="submit" value="Submit Short Question" />
           </form>
         </EnterQuestionShort>
       )}
