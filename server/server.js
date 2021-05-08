@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const path = require('path');
 
 const http = require('http');
 const server = http.createServer(app);
@@ -13,7 +14,7 @@ const io = require('socket.io')(server, {
   },
 });
 
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 const roomsController = require('./controllers/roomsController');
 
 app.use(express.urlencoded({ extended: true }));
@@ -42,6 +43,9 @@ app.post(
   roomsController.checkRoom,
   roomsController.createRoom
 );
+
+//in production, serve the build folder
+app.use(express.static(path.join(__dirname, '../build')));
 
 // Websockets/Socket.io stuff
 io.on('connection', (socket) => {
@@ -96,6 +100,6 @@ io.on('connection', (socket) => {
 // 404 handler
 app.use((req, res) => res.status(404).json({ err: 'Page not found!' }));
 
-server.listen(port, () =>
-  console.log(`Thinkquiry listening at http://localhost:${port}`)
+server.listen(PORT, () =>
+  console.log(`Thinkquiry listening at http://localhost:${PORT}`)
 );
