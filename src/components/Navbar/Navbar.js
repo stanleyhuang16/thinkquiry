@@ -52,10 +52,7 @@ const Navbar = () => {
               <NavItem>
                 <NavLinks to="/">Home</NavLinks>
               </NavItem>
-              <NavItem>
-                <NavLinks to="/about">About</NavLinks>
-              </NavItem>
-              <NavItemBtn>
+              {/* <NavItemBtn>
                 {button ? (
                   <NavBtnLink to="/sign-up">
                     <Button>Get Started</Button>
@@ -65,7 +62,7 @@ const Navbar = () => {
                     <Button fontBig>Get Started</Button>
                   </NavBtnLink>
                 )}
-              </NavItemBtn>
+              </NavItemBtn> */}
             </NavMenu>
           </NavbarContainer>
         </Nav>

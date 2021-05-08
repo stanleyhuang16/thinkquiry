@@ -26,6 +26,7 @@ import {
   QuestionInput,
   MultipleChoiceContainer,
   MultipleChoiceInput,
+  StudentQuestionText,
 } from './TeacherQuestionSection.elements';
 
 function TeacherQuestionSection({ socket, roomName, setStudentResponses }) {
@@ -91,13 +92,20 @@ function TeacherQuestionSection({ socket, roomName, setStudentResponses }) {
                   <ToggleSwitch handleToggleChange={handleToggleChange} />
                   <ToggleText>Multiple Choice</ToggleText>
                 </ToggleContainer>
-                <QuestionInput
-                  type="text"
-                  name="shortQuestion"
-                  placeholder="Question Text"
-                  value={question}
-                  onChange={handleChangeQuestion}
-                />
+                {editingQuestion ? (
+                  <QuestionInput
+                    type="text"
+                    name="shortQuestion"
+                    placeholder="Question Text"
+                    value={question}
+                    onChange={handleChangeQuestion}
+                  />
+                ) : (
+                  <>
+                    <ToggleText>Students are currently answering:</ToggleText>
+                    <StudentQuestionText>{question}</StudentQuestionText>
+                  </>
+                )}
                 {questionType === 'multiple choice' && (
                   <MultipleChoiceContainer>
                     <MultipleChoiceInput
@@ -136,7 +144,7 @@ function TeacherQuestionSection({ socket, roomName, setStudentResponses }) {
                     Submit Question
                   </Button>
                 ) : (
-                  <Button onClick={handleAskAnotherQuestion}>
+                  <Button primary onClick={handleAskAnotherQuestion}>
                     Ask Another Question
                   </Button>
                 )}

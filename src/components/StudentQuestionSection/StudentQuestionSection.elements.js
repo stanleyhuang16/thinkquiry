@@ -69,6 +69,7 @@ export const PricingCardInfo = styled.div`
   display: flex;
   flex-direction: column;
   height: 500px;
+  word-wrap: break-word;
   padding: 24px;
   align-items: center;
   color: black;
@@ -201,5 +202,27 @@ export const RadioButton = styled.input`
   &:checked + ${RadioButtonLabel} {
     background: palevioletred;
     border: 1px solid palevioletred;
+  }
+`;
+
+export const StudentButton = styled.button`
+  border-radius: 4px;
+  background: ${({ primary }) => (primary ? 'gray' : 'palevioletred')};
+  white-space: nowrap;
+  padding: ${({ big }) => (big ? '12px 64px' : '10px 20px')};
+  color: #fff;
+  font-size: ${({ fontBig }) => (fontBig ? '20px' : '16px')};
+  outline: none;
+  border: none;
+  cursor: not-allowed;
+
+  &:hover {
+    transition: all 0.3s ease-out;
+    background: #fff;
+    background: ${({ primary }) => (primary ? 'gray' : '#4B59F7')};
+  }
+
+  @media screen and (max-width: 960px) {
+    width: 100%;
   }
 `;

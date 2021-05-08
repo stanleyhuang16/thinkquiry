@@ -35,7 +35,9 @@ const Home = ({ setSocket }) => {
       if (!roomName) return alert('Please input a valid room name.');
       if (roomName.includes('/'))
         return alert('Room names cannot include "/". Please try again.');
-      if (!studentName) studentName = 'Anonymous';
+      if (!studentName) {
+        studentName = 'Anonymous';
+      }
 
       fetch('/api/checkRoom', {
         method: 'POST',

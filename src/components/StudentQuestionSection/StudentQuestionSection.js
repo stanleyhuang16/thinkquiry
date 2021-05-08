@@ -17,6 +17,7 @@ import {
   MultipleChoiceItem,
   RadioButtonLabel,
   RadioButton,
+  StudentButton,
 } from './StudentQuestionSection.elements';
 
 function StudentQuestionSection({
@@ -31,6 +32,7 @@ function StudentQuestionSection({
 
   useEffect(() => {
     setEditingAnswer(true);
+    setShortAnswer('');
   }, [studentQuestionData.currentQuestion]);
 
   function handleSubmitAnswer(e) {
@@ -139,9 +141,9 @@ function StudentQuestionSection({
                 {editingAnswer ? (
                   <Button onClick={handleSubmitAnswer}>Submit Answer</Button>
                 ) : (
-                  <Button primary>
+                  <StudentButton primary>
                     Answer Submitted, Waiting For Next Question...
-                  </Button>
+                  </StudentButton>
                 )}
               </PricingCardInfo>
             </PricingCard>
