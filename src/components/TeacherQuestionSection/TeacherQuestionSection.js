@@ -42,7 +42,7 @@ function TeacherQuestionSection({ roomName }) {
     console.log(question);
     setEditingQuestion(false);
 
-    //send all the state via websocket here.
+    //send all the state via websocket here. QuestionType, question, and multiple choice array if applicable.
   }
 
   function handleChangeQuestion(e) {
